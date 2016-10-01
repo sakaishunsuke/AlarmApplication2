@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#9c29b0</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorAlarmTitle">#9e9e9e</color>
+    <color name="colorAlarmList">#e0e0e0</color>
+    <color name="colorReminderTitle">#2397f3</color>
+    <color name="colorReminderList">#e3f2fd</color>
+    <color name="colorHome">#000000</color>
+
+    <color name="colorAlarmListBack">#616161</color>
+    <color name="colorAlarmText">#ffffff</color>
+
+
+
 </resources>

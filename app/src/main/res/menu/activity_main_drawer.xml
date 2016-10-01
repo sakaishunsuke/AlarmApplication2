@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:title="メイン機能">
+            <item
+                android:id="@+id/nav_alarm"
+                android:title="アラーム" />
+            <item
+                android:id="@+id/nav_reminder"
+                android:title="リマインダー" />
+        </item>
+    </group>
+
+    <item android:title="その他">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:title="設定" />
+            <item
+                android:id="@+id/nav_help"
+                android:title="ヘルプ" />
+            <item
+                android:id="@+id/nav_version"
+                android:title="バージョン" />
+        </menu>
+    </item>
+
+</menu>
