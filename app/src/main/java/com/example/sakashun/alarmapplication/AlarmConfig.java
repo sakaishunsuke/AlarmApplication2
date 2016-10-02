@@ -45,6 +45,8 @@ import java.util.Arrays;
 public class AlarmConfig extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private AlarmController alarmController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +130,7 @@ public class AlarmConfig extends AppCompatActivity
         //アラームの番号一覧取得
         int number_list[] = new int[20];
         String time_list[] = new String[20];
+        boolean alarm_set_chec[] = new boolean[20];
         Arrays.fill(number_list, 0);//0で初期化
         try{
             InputStream in = openFileInput("alarm_list_data.txt");
@@ -135,17 +138,18 @@ public class AlarmConfig extends AppCompatActivity
             String s;
             while((s = reader.readLine())!= null) {
                 //現在のアラームの番号を受け取る
-                System.out.println("中身は"+s+"←");
-                if(s!="\n"){
-                    //alarm_list_number= (int) Long.parseLong(s,0);
-                    String[] strs = s.split(",");
-                    for ( int i = 0; i < strs.length; i++ ){
-                        System.out.println(String.format("分割後 %d 個目の文字列 -> %s", i+1, strs[i]));
-                    }
-                    number_list[Integer.parseInt(strs[0])]=1;//チェックしていく
-                    time_list[Integer.parseInt(strs[0])]=strs[1];//時間を保存
+                System.out.println("中身は" + s + "←");
+                //alarm_list_number= (int) Long.parseLong(s,0);
+                String[] strs = s.split(",");
+                for (int i = 0; i < strs.length; i++) {
+                    System.out.println(String.format("分割後 %d 個目の文字列 -> %s", i + 1, strs[i]));
+                }
+                number_list[Integer.parseInt(strs[0])] = 1;//チェックしていく
+                time_list[Integer.parseInt(strs[0])] = strs[1];//時間を保存
+                if(strs.length==3){
+                    alarm_set_chec[Integer.parseInt(strs[0])] = (strs[2].matches("true"));
                 }else{
-                    System.out.println("改行が入りました");
+                    alarm_set_chec[Integer.parseInt(strs[0])] = false;
                 }
             }
             reader.close();
@@ -208,6 +212,7 @@ public class AlarmConfig extends AppCompatActivity
             final TextView list_name = (TextView) incLayout.findViewById(R.id.list_name);//アラーム名
             RelativeLayout alarm_list_layout = (RelativeLayout) incLayout.findViewById(R.id.alarm_list_layout);//ひな形全体のレイアウト
             final Switch alarm_list_switch = (Switch)incLayout.findViewById(R.id.alarm_list_switch);//アラームonoffスイッチ
+            alarm_list_switch.setChecked(alarm_set_chec[number]);//onoffの状態を反映させる
 
 
 
@@ -246,7 +251,19 @@ public class AlarmConfig extends AppCompatActivity
             alarm_list_layout.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    alarm_list_switch.setChecked(!alarm_list_switch.isChecked());
+                    alarmController = new AlarmController();
+                    if(alarm_list_switch.isChecked()==false) {
+                        //チェックがonにしたならアラームをセット
+                        if(alarmController.AlarmOneSet(AlarmConfig.this, number)){
+                            //無事にセットできたらチェックボタンを変更
+                            alarm_list_switch.setChecked(true);
+                        }
+                    }else {
+                        if(alarmController.AlarmOneCancel(AlarmConfig.this, number)){
+                            //無事にキャンセルできたらチェックボタンを変更
+                            alarm_list_switch.setChecked(false);
+                        }
+                    }
                 }
             });
 

@@ -12,7 +12,7 @@
     <dimen name="list_icon_size">40dp</dimen>
     <dimen name="list_icon_margin_size">10dp</dimen>
 
-    <dimen name="list_text_size">23dp</dimen>
+    <dimen name="list_text_size">20sp</dimen>
 
     <dimen name="padding_size_LLL">32dp</dimen>
 </resources>

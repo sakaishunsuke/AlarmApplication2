@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#95fce2"
+    android:id="@+id/alarm_screen_layout">
 
     <TextClock
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textClock"
         android:layout_gravity="center_horizontal"
-        android:textSize="60dp"
-        android:layout_margin="25dp"
+        android:textSize="70sp"
+        android:layout_margin="15dp"
         android:focusableInTouchMode="false"
         android:focusable="false"
         android:enabled="true"
@@ -22,12 +25,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="アラーム\n時間です！"
+        android:text="Tap on Time,Run Snooze"
         android:id="@+id/textView6"
-        android:textSize="50dp"
+        android:textSize="25sp"
         android:password="false"
         android:foregroundGravity="fill_vertical"
         android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/alarm_name"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:text="名前"
+        android:textSize="25sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,49 +51,61 @@
         android:textSize="30dp" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="STOP"
-            android:id="@+id/alarm_stop_button1"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ALARM　STOP"
-            android:id="@+id/alarm_stop_button2"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            <Button
+                android:id="@+id/alarm_stop_button1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_button"
+                android:layout_weight="1"
+                android:text="Stop"
+                android:textSize="30sp" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="アラーム停止"
-            android:id="@+id/alarm_stop_button3"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            <Button
+                android:id="@+id/alarm_stop_button3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_button"
+                android:layout_weight="1"
+                android:text="Stop"
+                android:textSize="30sp" />
+        </LinearLayout>
 
-        <Button
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="停止"
-            android:id="@+id/alarm_stop_button4"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/alarm_stop_button2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_button"
+                android:layout_weight="1"
+                android:text="Stop"
+                android:textSize="30sp"
+                android:layout_margin="10dp" />
+
+            <Button
+                android:id="@+id/alarm_stop_button4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_button"
+                android:layout_weight="1"
+                android:text="Stop"
+                android:textSize="30sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

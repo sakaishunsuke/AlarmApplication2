@@ -92,6 +92,9 @@ public class AlarmSetting extends ActionBarActivity {
     AudioManager am;// AudioManagerのフィールド
     int now_volume;//今現在の音量を格納する
 
+    AlarmController alarmController;//アラームセットの準備
+    //実際にセットしているのはalarm_makeの中の上書き直後
+
     public void linkSet() {
         alarm_name = (EditText) findViewById(R.id.alarm_name);//アラームの名前(タイトル)
         alarm_time_text = (TextView) findViewById(R.id.alarm_time_text);//アラームの時間
@@ -218,6 +221,7 @@ public class AlarmSetting extends ActionBarActivity {
         int alarm_number_list[] = new int[20];//アラームの番号のチェックリスト
         Arrays.fill(alarm_number_list, 0);//0で初期化
         String alarm_time_list[] = new String[20];//時間の内容を入れる部分
+        String copy[] = new String[20];//上書きの元データのコピー
         try {
             InputStream in = openFileInput("alarm_list_data.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
@@ -232,6 +236,11 @@ public class AlarmSetting extends ActionBarActivity {
                     }
                     alarm_number_list[Integer.parseInt(strs[0])] = 1;//チェックしていく
                     alarm_time_list[Integer.parseInt(strs[0])] = strs[1];//時間を保存
+                    if(strs.length==3){
+                        copy[Integer.parseInt(strs[0])] = strs[2];
+                    }else{
+                        copy[Integer.parseInt(strs[0])] = "false";
+                    }
                 } else {
                     System.out.println("改行が入りました");
                 }
@@ -248,13 +257,14 @@ public class AlarmSetting extends ActionBarActivity {
         //今回の設定を加える
         alarm_number_list[alarm_list_number] = 1;
         alarm_time_list[alarm_list_number] = (String) alarm_time_text.getText();
+        copy[alarm_list_number] = "true";
         try {
             out = openFileOutput("alarm_list_data.txt", MODE_PRIVATE);
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
             //追記する
             for (int i = 0; i < 20; i++) {
                 if (alarm_number_list[i] == 1) {
-                    writer.append(i + "," + alarm_time_list[i] + "\n");//管理ファイルに書き込んでいく
+                    writer.append(i + "," + alarm_time_list[i] + "," + copy[i] +  "\n");//管理ファイルに書き込んでいく
                 }
             }
             writer.close();
@@ -264,6 +274,10 @@ public class AlarmSetting extends ActionBarActivity {
             System.out.println("error code 2");
             //Toast.makeText(AlarmSetting.this,"アラームリスト番号の更新に失敗", Toast.LENGTH_SHORT).show();
         }
+
+        //アラームのセット
+        alarmController = new AlarmController();
+        alarmController.AlarmOneSet(AlarmSetting.this,alarm_list_number);
 
         System.out.println("内容確認↓");
         try {
