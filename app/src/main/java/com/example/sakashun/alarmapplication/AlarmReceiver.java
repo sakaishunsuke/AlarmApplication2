@@ -22,7 +22,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         //アクションを受け取るメソッド
         Intent intent = new Intent(context
                 , com.example.sakashun.alarmapplication.AlarmNotification.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("NUMBER", data.getIntExtra("NUMBER", -1));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

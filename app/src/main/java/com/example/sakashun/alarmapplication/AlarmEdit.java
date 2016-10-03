@@ -324,7 +324,7 @@ public class AlarmEdit extends ActionBarActivity {
                     boolean fromUser
             ) {
                 // シークバーの入力値に変化が生じた段階で音量を変更
-                mp.setVolume((float) progress/100f,(float) progress/100f);
+                mp.setVolume((float) progress/100.0f,(float) progress/100.0f);
                 //System.out.println("シークバーの値は"+progress);
                 if (!mp.isPlaying()) {
                     // MediaPlayerの再生
@@ -334,7 +334,7 @@ public class AlarmEdit extends ActionBarActivity {
             }
             public void onStartTrackingTouch(SeekBar volumeSeekbar) {
                 // トグル（シークバーのつまみ）がタッチされたときの動作
-                am.setStreamVolume(AudioManager.STREAM_MUSIC,100,0);//音量をmaxにする
+                am.setStreamVolume(AudioManager.STREAM_MUSIC,am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),0);//音量をmaxにする
                 mp.setLooping(true);//リピート設定
                 if(mp!=null)
                     // mp.seekTo(0); // プレイ中のBGMをスタート位置に戻す

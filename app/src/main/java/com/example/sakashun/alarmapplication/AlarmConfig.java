@@ -274,7 +274,7 @@ public class AlarmConfig extends AppCompatActivity
                 @Override
                 public boolean onLongClick(View v) {
                     // 確認ダイアログの生成
-                    AlertDialog.Builder alertDlg = new AlertDialog.Builder(AlarmConfig.this);
+                    final AlertDialog.Builder alertDlg = new AlertDialog.Builder(AlarmConfig.this);
                     alertDlg.setTitle(list_name.getText());
                     alertDlg.setMessage("アラーム時間　　　　" + "\t" + list_time.getText()+ "\n" +
                             "バイブレーション　　" + "\t"  + finalVibrator + "\n" +
@@ -320,6 +320,9 @@ public class AlarmConfig extends AppCompatActivity
                                         ee.printStackTrace();
                                         System.out.println("error code 2");
                                     }
+                                    alarmController = new AlarmController();
+                                    if(!alarmController.AlarmOneCancel(alertDlg.getContext(),number))//アラームの消去
+                                        System.out.println("編集前のいったん消去に失敗");
                                     alarm_list_make();//再起させてリストを作り直す
                                 }
                             });
@@ -327,6 +330,9 @@ public class AlarmConfig extends AppCompatActivity
                             "編集",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    alarmController = new AlarmController();
+                                    if(!alarmController.AlarmOneCancel(alertDlg.getContext(),number))//アラームをセットをいったん消去
+                                            System.out.println("編集前のいったん消去に失敗");
                                     // 編集 ボタンクリック処理
                                     Intent intent = new Intent(getApplication()
                                             ,com.example.sakashun.alarmapplication.AlarmEdit.class);

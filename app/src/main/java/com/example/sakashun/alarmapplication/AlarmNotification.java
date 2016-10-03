@@ -12,9 +12,12 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -24,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,21 +38,24 @@ import java.util.TimerTask;
 public class AlarmNotification extends Activity {
     private PowerManager.WakeLock wakelock;
     private KeyguardManager.KeyguardLock keylock;
+    private Vibrator vib = null;
+    private long pattern[] = {1000, 300 };
 
     MediaPlayer mp = null;//曲をながすため
     Uri music_uri = null;//曲のuri
     int sunuzu = 0;//スヌーズの時間保持
-    int volume = 50;
+    int volume = 0;
     boolean vibrator = false;
     boolean light = false;
     private LinearLayout mainLayout;// 背景のレイアウト
     Timer timer;//背景を徐々に変化させるためのもの
     int hsv_h = 100;//HSVのSの値
-    int updown = 5;//HSVの変化量
-    int updown_time = 200;//HSVの変化時間(ms)
+    int updown = 1;//HSVの変化量
+    int updown_time = 40;//HSVの変化時間(ms)
     AudioManager am;// AudioManagerのフィールド
     int now_volume;//今現在の音量を格納する
     AlarmController alarmController;//アラームをキャンセルまたはスヌーズするため
+    Handler handler = new Handler();//定期処理
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,7 @@ public class AlarmNotification extends Activity {
 
         // スクリーンロックを解除する
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+
         KeyguardManager keyguard = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         keylock = keyguard.newKeyguardLock("disableLock");
         keylock.disableKeyguard();
@@ -124,7 +132,8 @@ public class AlarmNotification extends Activity {
                         if(strs[1].matches("なし")){
                             sunuzu = 0;
                         }else {
-                            sunuzu = Integer.parseInt(strs[1]);
+                            String[] strs2 = strs[1].split("分");
+                            sunuzu = Integer.parseInt(strs2[0]);
                         }
                     }
                 }
@@ -164,10 +173,10 @@ public class AlarmNotification extends Activity {
 
     //色が変わっていくようにHSVの値を変化させてRGBにする
     public void LayoutColorChange() {
-        System.out.println("色の定期更新起動");
+        //System.out.println("色の定期更新起動");
         int rgb[];
         hsv_h += updown;
-        if (updown > 0 && hsv_h >= 215) {
+        if (updown > 0 && hsv_h >= 220) {
             updown *= -1;
         } else if (updown < 0 && hsv_h <= 35) {
             updown *= -1;
@@ -200,19 +209,29 @@ public class AlarmNotification extends Activity {
     public void onStart() {
         super.onStart();
         Log.v("通知ログ", "start");
-        //バックの色が徐々に変化するように定期更新タスクを生成
-        timer = new Timer();
-        TimerTask timerTask = new AlarmScreenTimarTask(this);
-        timer.scheduleAtFixedRate(timerTask, 0, updown_time);
+        //バックの色が徐々に変化するように定期更新タスクを実行
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LayoutColorChange();
+                handler.postDelayed(this,updown_time);
+            }
+        },updown_time);
+
+        // Vibratorのパターン実行
+        if(vibrator){
+            // Vibratorクラスのインスタンス取得
+            vib = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+            vib.vibrate(pattern,0);
+        }
+
+        //スリープ画面にならないように
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // 再生準備、再生可能状態になるまでブロック
         //mp.prepare();
 
-        //音量の取得
-        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);// AudioManagerを取得する
-        now_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);//曲再生時の音量を取得
-        am.setStreamVolume(AudioManager.STREAM_MUSIC,volume,0);//音量をsetにする
-        // 再生開始
+        // 再生準備
         if(mp==null){
             System.out.println("mpがnullでした");
             if(music_uri != null){
@@ -221,21 +240,15 @@ public class AlarmNotification extends Activity {
                 mp = MediaPlayer.create(AlarmNotification.this, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
             }
             mp.setLooping(true);//リピート設定
-            // MediaPlayerの再生
-            mp.seekTo(0); // プレイ中のBGMをスタート位置に戻す
-            mp.start();
         }
-        if (!mp.isPlaying()) {
-            try {
-                mp.prepare();
-            } catch (IllegalStateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (java.lang.ArrayIndexOutOfBoundsException e){
-                e.printStackTrace();
-            }
+
+        //音量の取得
+        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);// AudioManagerを取得する
+        now_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);//曲再生時の音量を取得
+        am.setStreamVolume(AudioManager.STREAM_MUSIC,am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),0);//音量をmaxにする
+        mp.setVolume((float) volume/100f,(float) volume/100f);//Mediaplayerの音量を変更するにする
+
+        if (!mp.isPlaying()) {//再生開始
             // MediaPlayerの再生
             mp.seekTo(0); // プレイ中のBGMをスタート位置に戻す
             mp.start();
@@ -247,10 +260,18 @@ public class AlarmNotification extends Activity {
     public void onStop() {
         super.onStop();
         Log.v("通知ログ", "stop");
-        am.setStreamVolume(AudioManager.STREAM_MUSIC,now_volume,0);//音量を元に戻す
-        if (timer != null)//定期更新をやめさせる
-            timer.cancel();
         stopAndRelaese();//曲を止める
+
+        am.setStreamVolume(AudioManager.STREAM_MUSIC,now_volume,0);//音量を元に戻す
+
+        //定期更新終了
+        handler.removeCallbacksAndMessages(null);
+
+        // Vibratorのパターン停止
+        if(vibrator) vib.cancel();
+
+        //スリープ画面になるようにする
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
