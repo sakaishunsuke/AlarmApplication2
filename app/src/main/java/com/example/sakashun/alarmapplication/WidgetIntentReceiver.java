@@ -14,7 +14,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("UPDATE_WIDGET")) {
-            System.out.println("反応してますよ！");
+            System.out.println("反応してますよ！"+WidgetIntentReceiver.clickCount);
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.alarm_widget);
 
             // テキストをクリック回数を元に更新

@@ -270,9 +270,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_alignParentTop="true">
+                        android:layout_alignParentTop="true"
+                        android:id="@+id/relativeLayout">
 
                     </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="アラーム音"
+                        android:id="@+id/textView5"
+                        android:textColor="@color/colorAlarmText"
+                        android:gravity="left|center_vertical|center_horizontal"
+                        android:textSize="@dimen/list_text_size"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true" />
 
                 </RelativeLayout>
 
@@ -287,21 +299,8 @@
                     android:layout_toRightOf="@+id/imageView6"
                     android:textSize="18dp"
                     android:paddingBottom="1dp"
-                    android:textColor="@color/colorAlarmText"
+                    android:textColor="@color/colorAlarmListBack"
                     android:maxLines="1" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="アラーム音"
-                    android:id="@+id/textView5"
-                    android:textColor="@color/colorAlarmText"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="left|center_vertical|center_horizontal"
-                    android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/imageView6"
-                    android:layout_above="@+id/music_name_text"
-                    android:textSize="@dimen/list_text_size" />
 
             </RelativeLayout>
 

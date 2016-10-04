@@ -270,6 +270,9 @@ public class AlarmConfig extends AppCompatActivity
             final String finalVibrator = vibrator;
             final String finalLed = led;
             final String finalSunuzu = sunuzu;
+
+            final Context alarm_config_context = AlarmConfig.this;//ダイアログ中にconxtを渡すため
+
             alarm_list_layout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -284,7 +287,12 @@ public class AlarmConfig extends AppCompatActivity
                             "消去",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // OK ボタンクリック処理
+                                    // 消去 ボタンクリック処理
+                                    alarmController = new AlarmController();
+                                    if(!alarmController.AlarmOneCancel(alarm_config_context,number)) {//アラームの消去
+                                        System.out.println("消去に失敗　番号:" + number);
+                                        return;//アラームの消去に失敗したので表示を消さない
+                                    }
                                     //まずはもともと書いてある内容から消したい番号以外を読み取る
                                     String[] copy = new String[20];
                                     int list_count = 0;
@@ -320,9 +328,6 @@ public class AlarmConfig extends AppCompatActivity
                                         ee.printStackTrace();
                                         System.out.println("error code 2");
                                     }
-                                    alarmController = new AlarmController();
-                                    if(!alarmController.AlarmOneCancel(alertDlg.getContext(),number))//アラームの消去
-                                        System.out.println("編集前のいったん消去に失敗");
                                     alarm_list_make();//再起させてリストを作り直す
                                 }
                             });
@@ -331,7 +336,7 @@ public class AlarmConfig extends AppCompatActivity
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     alarmController = new AlarmController();
-                                    if(!alarmController.AlarmOneCancel(alertDlg.getContext(),number))//アラームをセットをいったん消去
+                                    if(!alarmController.AlarmOneCancel(alarm_config_context,number))//アラームをセットをいったん消去
                                             System.out.println("編集前のいったん消去に失敗");
                                     // 編集 ボタンクリック処理
                                     Intent intent = new Intent(getApplication()

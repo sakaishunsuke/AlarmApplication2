@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         reminder_all_list.setOnClickListener(new View.OnClickListener(){
             @Override
             public  void onClick(View v){
-                LockSet();
+                //LockSet();
             }
         });
 
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_reminder) {
 
             Toast.makeText(MainActivity.this,"メニューで"+item.toString()+"が押されました", Toast.LENGTH_SHORT).show();
-            ReminderStart();
+            //ReminderStart();
         } else if (id == R.id.nav_setting) {
 
             Toast.makeText(MainActivity.this,"メニューで"+item.toString()+"が押されました", Toast.LENGTH_SHORT).show();

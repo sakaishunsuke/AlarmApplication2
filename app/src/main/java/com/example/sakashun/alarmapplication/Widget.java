@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.RemoteViews;
 
 /**
@@ -13,6 +14,7 @@ import android.widget.RemoteViews;
  */
 public class Widget extends AppWidgetProvider {
 
+    int a=0;
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // ウィジェットレイアウトの初期化

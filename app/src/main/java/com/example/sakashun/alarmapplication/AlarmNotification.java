@@ -6,6 +6,8 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -54,8 +56,9 @@ public class AlarmNotification extends Activity {
     int updown_time = 40;//HSVの変化時間(ms)
     AudioManager am;// AudioManagerのフィールド
     int now_volume;//今現在の音量を格納する
-    AlarmController alarmController;//アラームをキャンセルまたはスヌーズするため
+    AlarmController alarmController;//アラームをキャンセルまたはスヌーズするためまたチェックも含む
     Handler handler = new Handler();//定期処理
+    private Camera camera = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,15 @@ public class AlarmNotification extends Activity {
         keylock.disableKeyguard();
         //アラーム番号の取得
         final int number = getIntent().getIntExtra("NUMBER",-1);
+
+        //ホントにならすべきかチェック
+        alarmController = new AlarmController();
+        if(number != -1  && !alarmController.AlarmChec(this,number)){
+            Intent intent = new Intent(AlarmNotification.this,
+                    com.example.sakashun.alarmapplication.MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         //名前の部分のリンク
         TextView alarm_name = (TextView)findViewById(R.id.alarm_name);
@@ -199,6 +211,43 @@ public class AlarmNotification extends Activity {
             mp.seekTo(0); // プレイ中のBGMをスタート位置に戻す
             mp.start();
         }
+
+        //ついでにLEDのフラッシュを実行
+        if(light && hsv_h%15==0) {
+            //パラメータ取得
+            Camera.Parameters params = camera.getParameters();
+            //フラッシュモードを点灯に設定
+            if(params.getFlashMode().matches(Camera.Parameters.FLASH_MODE_OFF)) {
+                params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                System.out.println("カメラのフラッシュOn");
+            }else if(params.getFlashMode().matches(Camera.Parameters.FLASH_MODE_TORCH)) {
+                params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                System.out.println("カメラのフラッシュOff");
+            }else{
+                System.out.println("カメラのフラッシュエラー");
+                //カメラデバイス動作停止
+                camera.stopPreview();
+                //カメラデバイス解放
+                camera.release();
+                camera = null;
+
+                //カメラデバイス取得
+                camera = Camera.open();
+                //セット
+                Camera.Parameters cp = camera.getParameters();
+                cp.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                camera.setParameters(cp);
+                //準備
+                try {
+                    camera.setPreviewTexture(new SurfaceTexture(0));
+                } catch (IOException e) {
+                }
+                //カメラデバイス動作開始
+                camera.startPreview();
+            }
+            //パラメータ設定
+            camera.setParameters(params);
+        }
     }
 
     //戻るボタンを無効化
@@ -225,6 +274,21 @@ public class AlarmNotification extends Activity {
             vib.vibrate(pattern,0);
         }
 
+        if(light) {
+            //カメラデバイス取得
+            camera = Camera.open();
+            //セット
+            Camera.Parameters cp = camera.getParameters();
+            cp.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            camera.setParameters(cp);
+            //準備
+            try {
+                camera.setPreviewTexture(new SurfaceTexture(0));
+            } catch (IOException e) {
+            }
+            //カメラデバイス動作開始
+            camera.startPreview();
+        }
         //スリープ画面にならないように
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -270,6 +334,14 @@ public class AlarmNotification extends Activity {
         // Vibratorのパターン停止
         if(vibrator) vib.cancel();
 
+        if(light) {
+            //カメラデバイス動作停止
+            camera.stopPreview();
+            //カメラデバイス解放
+            camera.release();
+            camera = null;
+        }
+
         //スリープ画面になるようにする
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
@@ -277,6 +349,7 @@ public class AlarmNotification extends Activity {
     @Override
     public void onDestroy() {
         Log.v("通知ログ", "destroy");
+        finish();
         super.onDestroy();
     }
 

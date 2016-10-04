@@ -22,6 +22,7 @@ public class AlarmController{
 
     private class AlarmFile{
         boolean open_chec = false;//ファイルが無事に開けたか確認
+        boolean alarm_chec = false;//アラームがon設定になっているか
         //アラームの時間を保存する変数を宣言数
         int hour;       //アラームの時
         int minute;     //アラームの分
@@ -37,6 +38,9 @@ public class AlarmController{
                     //渡されたアラームの番号の時間を探す
                     String[] strs = s.split(",");
                     if(Integer.parseInt(strs[0])==number){
+                        if(strs[2]!=null && strs[2].matches("true")){
+                            alarm_chec = true;
+                        }
                         open_chec = true;//見つかったので開けたというようにしておく
                         String[] time = strs[1].split(":");
                         hour = Integer.parseInt(time[0]);//時を保存
@@ -50,6 +54,7 @@ public class AlarmController{
             }catch(IOException e){
                 //もし番号の取得に失敗つまりは、最初だった場合はファイルだけ新しく作る
                 e.printStackTrace();
+                System.out.println("ファイルが開けませんでした");
                 open_chec = false;
             }
         }
@@ -101,10 +106,6 @@ public class AlarmController{
             return true;
         }
     }
-
-
-
-
 
     public boolean AlarmOneSet(Context context,int number) {
         //ファイルを開く
@@ -203,6 +204,15 @@ public class AlarmController{
         }
         //Toast.makeText(context,"キャンセルしました", Toast.LENGTH_SHORT).show();
         return true;
+    }
+    public boolean AlarmChec(Context context,int number){
+        //ファイルを開く
+        AlarmFile alarm_file = new AlarmFile(context,number);
+        if(alarm_file.OpenChec()==false){//しっかりと開けたか確認
+            return false;
+        }
+
+        return alarm_file.alarm_chec;
     }
     /*
     public boolean Alarm_all_set() {
