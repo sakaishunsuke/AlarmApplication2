@@ -49,6 +49,7 @@ public class AlarmNotification extends Activity {
     int volume = 0;
     boolean vibrator = false;
     boolean light = false;
+    int onoff_chec_count=0;
     private LinearLayout mainLayout;// 背景のレイアウト
     Timer timer;//背景を徐々に変化させるためのもの
     int hsv_h = 100;//HSVのSの値
@@ -214,16 +215,19 @@ public class AlarmNotification extends Activity {
 
         //ついでにLEDのフラッシュを実行
         if(light && hsv_h%15==0) {
+            System.out.println("カメラのフラッシュカウント"+onoff_chec_count++);
             //パラメータ取得
             Camera.Parameters params = camera.getParameters();
             //フラッシュモードを点灯に設定
             if(params.getFlashMode().matches(Camera.Parameters.FLASH_MODE_OFF)) {
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 System.out.println("カメラのフラッシュOn");
+                onoff_chec_count=0;
             }else if(params.getFlashMode().matches(Camera.Parameters.FLASH_MODE_TORCH)) {
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                 System.out.println("カメラのフラッシュOff");
-            }else{
+            }
+            if(onoff_chec_count<-20 || onoff_chec_count>20){
                 System.out.println("カメラのフラッシュエラー");
                 //カメラデバイス動作停止
                 camera.stopPreview();
@@ -272,6 +276,7 @@ public class AlarmNotification extends Activity {
             // Vibratorクラスのインスタンス取得
             vib = (Vibrator)getSystemService(VIBRATOR_SERVICE);
             vib.vibrate(pattern,0);
+            System.out.println("バイブレーションOn");
         }
 
         if(light) {
@@ -318,7 +323,6 @@ public class AlarmNotification extends Activity {
             mp.start();
         }
     }
-
 
     @Override
     public void onStop() {
