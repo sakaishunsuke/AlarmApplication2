@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="false"
+    android:longClickable="false"
+    android:weightSum="1"
+    android:background="@color/colorAlarmListBack">
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mrl_rippleOverlay="true" >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/Alarm_list_height"
+        android:background="@color/colorAlarmList"
+        android:id="@+id/alarm_list_layout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="アラーム1"
+                android:id="@+id/list_name"
+                android:layout_weight="1"
+                android:textSize="@dimen/list_text_size"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:paddingLeft="35dp"
+                android:gravity="center_vertical" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="7:00"
+                android:id="@+id/list_time"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="@dimen/list_text_size" />
+        </RelativeLayout>
+    </LinearLayout>
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/colorBlack"/>
+
+</LinearLayout>

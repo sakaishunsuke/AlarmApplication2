@@ -23,13 +23,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,7 +54,7 @@ public class AlarmNotification extends Activity {
     int volume = 0;
     boolean vibrator = false;
     boolean light = false;
-    int onoff_chec_count=0;
+    int onoff_chec=1,onoff_chec_old=1;
     private LinearLayout mainLayout;// 背景のレイアウト
     Timer timer;//背景を徐々に変化させるためのもの
     int hsv_h = 100;//HSVのSの値
@@ -60,6 +65,68 @@ public class AlarmNotification extends Activity {
     AlarmController alarmController;//アラームをキャンセルまたはスヌーズするためまたチェックも含む
     Handler handler = new Handler();//定期処理
     private Camera camera = null;
+
+    void recordUpCount(String alarm_name,int alarm_list_number){
+        //現在のファイル内容を読み取る
+        System.out.println("現在のアラームファイルを読み取る");
+        int alarm_number_list[] = new int[20];//アラームの番号のチェックリスト
+        Arrays.fill(alarm_number_list, 0);//0で初期化
+        String alarm_time_list[] = new String[20];//時間の内容を入れる部分
+        int up_count[] = new int[20];
+        String copy[] = new String[20];//上書きの元データのコピー\
+        try {
+            InputStream in = openFileInput("alarm_list_data.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            String s;
+            while ((s = reader.readLine()) != null) {
+                //現在のアラームの書いてある内容を読み取る
+                //alarm_list_number= (int) Long.parseLong(s,0);
+                String[] strs = s.split(",");
+                alarm_number_list[Integer.parseInt(strs[0])] = 1;//チェックしていく
+                alarm_time_list[Integer.parseInt(strs[0])] = strs[1];//時間を保存
+                if (strs.length >= 3) {
+                    copy[Integer.parseInt(strs[0])] = strs[2];
+                } else {
+                    copy[Integer.parseInt(strs[0])] = "false";
+                }
+                if (strs.length >= 4) {
+                    up_count[Integer.parseInt(strs[0])] = Integer.parseInt(strs[3]);
+                } else {
+                    up_count[Integer.parseInt(strs[0])] = 0;
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            //もし番号の取得に失敗つまりは、最初だった場合はファイルだけ新しく作る
+            e.printStackTrace();
+            System.out.println("error code 1");
+        }
+
+        //現在のファイル内容をさっきのデータをもとに上書き
+        System.out.println("アラーム管理ファイルを上書き");
+        //今回の設定を加える
+        alarm_number_list[alarm_list_number] = 1;
+        alarm_time_list[alarm_list_number] = alarm_name;
+        copy[alarm_list_number] = "true";
+        up_count[alarm_list_number]++;
+        OutputStream out;
+        try {
+            out = openFileOutput("alarm_list_data.txt", MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
+            //追記する
+            for (int i = 0; i < 20; i++) {
+                if (alarm_number_list[i] == 1) {
+                    writer.append(i + "," + alarm_time_list[i] + "," + copy[i] + "," + up_count[i] +   "\n");//管理ファイルに書き込んでいく
+                }
+            }
+            writer.close();
+        } catch (IOException ee) {
+            // TODO 自動生成された catch ブロック
+            ee.printStackTrace();
+            System.out.println("error code 2");
+            //Toast.makeText(AlarmSetting.this,"アラームリスト番号の更新に失敗", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,7 +160,7 @@ public class AlarmNotification extends Activity {
         }
 
         //名前の部分のリンク
-        TextView alarm_name = (TextView)findViewById(R.id.alarm_name);
+        final TextView alarm_name = (TextView)findViewById(R.id.alarm_name);
         mainLayout = (LinearLayout) findViewById(R.id.alarm_screen_layout);
 
         //button設定
@@ -105,17 +172,6 @@ public class AlarmNotification extends Activity {
         long seed = System.currentTimeMillis(); // 現在時刻のミリ秒
         Random r = new Random(seed);
         int n =(int) ((r.nextDouble()*10)%4);
-
-        alarm_stop_button[n].setOnClickListener(new View.OnClickListener(){
-            @Override
-            public  void onClick(View v){
-                if(number!=-1) {
-                    alarmController = new AlarmController();
-                    alarmController.AlarmOneCancel(AlarmNotification.this, number);
-                }
-                finish();
-            }
-        });
 
         //アラームの音などの設定
         if(number!=-1) {
@@ -157,6 +213,32 @@ public class AlarmNotification extends Activity {
             }
 
         }
+
+        //終了
+        alarm_stop_button[n].setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View v){
+                if(number!=-1) {
+                    alarmController = new AlarmController();
+                    alarmController.AlarmOneCancel(AlarmNotification.this, number);
+                    recordUpCount((String) alarm_name.getText(),number);//起動したことを記録する
+                }
+                finish();
+            }
+        });
+
+        //スヌーズ
+        TextClock textClock = (TextClock)findViewById(R.id.textClock);
+        textClock.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View v){
+                if(number!=-1 && sunuzu!=0) {
+                    alarmController = new AlarmController();
+                    alarmController.AlarmSunuzuSet(AlarmNotification.this, number,sunuzu);
+                    finish();
+                }
+            }
+        });
 
     }
 
@@ -215,20 +297,25 @@ public class AlarmNotification extends Activity {
 
         //ついでにLEDのフラッシュを実行
         if(light && hsv_h%15==0) {
-            System.out.println("カメラのフラッシュカウント"+onoff_chec_count++);
+            System.out.println("カメラ "+onoff_chec+":"+onoff_chec_old);
             //パラメータ取得
             Camera.Parameters params = camera.getParameters();
             //フラッシュモードを点灯に設定
             if(params.getFlashMode().matches(Camera.Parameters.FLASH_MODE_OFF)) {
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 System.out.println("カメラのフラッシュOn");
-                onoff_chec_count=0;
+                onoff_chec_old=onoff_chec;
+                onoff_chec=1;
             }else if(params.getFlashMode().matches(Camera.Parameters.FLASH_MODE_TORCH)) {
                 params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                 System.out.println("カメラのフラッシュOff");
+                onoff_chec_old=onoff_chec;
+                onoff_chec=0;
             }
-            if(onoff_chec_count<-20 || onoff_chec_count>20){
+
+            if(onoff_chec==onoff_chec_old){
                 System.out.println("カメラのフラッシュエラー");
+                onoff_chec = onoff_chec_old = 1;
                 //カメラデバイス動作停止
                 camera.stopPreview();
                 //カメラデバイス解放
@@ -248,6 +335,7 @@ public class AlarmNotification extends Activity {
                 }
                 //カメラデバイス動作開始
                 camera.startPreview();
+
             }
             //パラメータ設定
             camera.setParameters(params);
@@ -353,7 +441,6 @@ public class AlarmNotification extends Activity {
     @Override
     public void onDestroy() {
         Log.v("通知ログ", "destroy");
-        finish();
         super.onDestroy();
     }
 

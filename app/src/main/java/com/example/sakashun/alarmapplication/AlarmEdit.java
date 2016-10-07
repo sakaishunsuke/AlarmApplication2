@@ -176,28 +176,27 @@ public class AlarmEdit extends ActionBarActivity {
         int alarm_number_list[] = new int[20];//アラームの番号のチェックリスト
         Arrays.fill(alarm_number_list, 0);//0で初期化
         String alarm_time_list[] = new String[20];//時間の内容を入れる部分
-        String copy[] = new String[20];//上書きの元データのコピー
+        int up_count[] = new int[20];
+        String copy[] = new String[20];//上書きの元データのコピー\
         try {
             InputStream in = openFileInput("alarm_list_data.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             String s;
             while ((s = reader.readLine()) != null) {
                 //現在のアラームの書いてある内容を読み取る
-                if (s != "\n") {
-                    //alarm_list_number= (int) Long.parseLong(s,0);
-                    String[] strs = s.split(",");
-                    for (int i = 0; i < strs.length; i++) {
-                        System.out.println(String.format("分割後 %d 個目の文字列 -> %s", i + 1, strs[i]));
-                    }
-                    alarm_number_list[Integer.parseInt(strs[0])] = 1;//チェックしていく
-                    alarm_time_list[Integer.parseInt(strs[0])] = strs[1];//時間を保存
-                    if(strs.length==3){
-                        copy[Integer.parseInt(strs[0])] = strs[2];
-                    }else{
-                        copy[Integer.parseInt(strs[0])] = "false";
-                    }
+                //alarm_list_number= (int) Long.parseLong(s,0);
+                String[] strs = s.split(",");
+                alarm_number_list[Integer.parseInt(strs[0])] = 1;//チェックしていく
+                alarm_time_list[Integer.parseInt(strs[0])] = strs[1];//時間を保存
+                if (strs.length >= 3) {
+                    copy[Integer.parseInt(strs[0])] = strs[2];
                 } else {
-                    System.out.println("改行が入りました");
+                    copy[Integer.parseInt(strs[0])] = "false";
+                }
+                if (strs.length >= 4) {
+                    up_count[Integer.parseInt(strs[0])] = Integer.parseInt(strs[3]);
+                } else {
+                    up_count[Integer.parseInt(strs[0])] = 0;
                 }
             }
             reader.close();
@@ -219,7 +218,7 @@ public class AlarmEdit extends ActionBarActivity {
             //追記する
             for (int i = 0; i < 20; i++) {
                 if (alarm_number_list[i] == 1) {
-                    writer.append(i + "," + alarm_time_list[i] + "," + copy[i] +  "\n");//管理ファイルに書き込んでいく
+                    writer.append(i + "," + alarm_time_list[i] + "," + copy[i] + "," + up_count[i] +   "\n");//管理ファイルに書き込んでいく
                 }
             }
             writer.close();

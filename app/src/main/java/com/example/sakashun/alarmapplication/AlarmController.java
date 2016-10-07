@@ -214,6 +214,65 @@ public class AlarmController{
 
         return alarm_file.alarm_chec;
     }
+
+    public boolean AlarmSunuzuSet(Context context,int number,int sunuzu_time) {
+
+        //アラームを識別するコード、任意なので重複しない好きな数値を設定
+        //int REQUEST_CODE = 140625;
+
+        //まず現在の時刻を取得する
+        Calendar cal = Calendar.getInstance();  //オブジェクトの生成
+        int year = cal.get(Calendar.YEAR);        //現在の年を取得
+        int month = cal.get(Calendar.MONTH);  //現在の月を取得
+        int day = cal.get(Calendar.DATE);         //現在の日を取得
+        long time = cal.getTimeInMillis();
+
+        //アラーム用のカレンダーを用意する
+        Calendar alarm_cal = Calendar.getInstance();  //オブジェクトの生成
+        long alarm_time = alarm_cal.getTimeInMillis() + sunuzu_time * 60 * 1000;
+        alarm_cal.setTimeInMillis(alarm_time);
+        int alarm_year = alarm_cal.get(Calendar.YEAR);        //アラームの年を取得
+        int alarm_month = alarm_cal.get(Calendar.MONTH);  //アラームの月を取得
+        int alarm_day = alarm_cal.get(Calendar.DATE);         //アラームの日を取得
+        int alarm_hour = alarm_cal.get(Calendar.HOUR);         //アラームの日を取得
+        int alarm_minute = alarm_cal.get(Calendar.MINUTE);         //アラームの日を取得
+
+        /*
+        if(time>alarm_time){
+            //現在の時間がアラーム時間より後の時　日付などを変える
+            if(cal.getActualMaximum(Calendar.MONTH)<alarm_day+1){
+                alarm_day = 1;
+                if(12<alarm_month+1){
+                    alarm_month = 1;
+                    alarm_year++;
+                }else{
+                    alarm_month++;
+                }
+            }else{
+                alarm_day++;
+            }
+
+        }*/
+
+        //設定された日時を表示
+        System.out.println("アラームがセットされました");
+        System.out.println(alarm_year+"/"+(alarm_month+1)+"/"+alarm_day);
+        System.out.println(alarm_hour+":"+alarm_minute);
+
+        //指定の時間になったら起動するクラス
+        Intent intent = new Intent(context,AlarmReceiver.class);
+        //ntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        //普通のintentと同じように、KEYとの組み合わせで値を受け渡しできるよ
+        intent.putExtra("NUMBER",number);
+        //ブロードキャストを投げるPendingIntentの作成
+        PendingIntent sender = PendingIntent.getBroadcast(context, number, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //AlramManager取得
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        //AlramManagerにPendingIntentを登録
+        am.set(AlarmManager.RTC_WAKEUP, alarm_time, sender);
+        //Toast.makeText(context,alarm_file.hour+":"+alarm_file.minute+"にセットしました", Toast.LENGTH_SHORT).show();
+        return true;
+    }
     /*
     public boolean Alarm_all_set() {
 

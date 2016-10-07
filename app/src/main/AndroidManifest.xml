@@ -28,11 +28,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AlarmTop"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
             android:name=".AlarmConfig"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
