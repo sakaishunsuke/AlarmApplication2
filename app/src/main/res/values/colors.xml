@@ -20,28 +20,17 @@
     <color name="colorAlarmListBack">#616161</color>
     -->
 
-    <color name="colorAlarmToolbarText">#ffffff</color>
-    <color name="colorAlarmSettingText">#000000</color>
-    <color name="colorAlarmListPrimaryText">#000000</color>
-    <color name="colorAlarmListSecondaryText">#000000</color>
-    <color name="colorAlarmTextAuthorization">#ff5722</color>
-    <color name="colorAlarmTextDismissal">#2196f3</color>
-
-    <color name="colorReminderToolbarText">#ffffff</color>
-    <color name="colorReminderSettingText">#000000</color>
-    <color name="colorReminderListPrimaryText">#000000</color>
-    <color name="colorReminderListSecondaryText">#000000</color>
-
-    <color name="colorNaviText">#000000</color>
-
     <color name="colorHomeSystemBar">#7b1fa2</color>
     <color name="colorHomeToolBar">#9c27b0</color>
     <color name="colorHomeBack">#ffffff</color>
+    <color name="colorHomeAllSelect">#ffffff</color>
     <color name="colorHomeLine">#000000</color>
+    <color name="colorHomeText">#000000</color>
 
     <color name="colorNavi">#9c27b0</color>
     <color name="colorNaviBack">#ffffff</color>
     <color name="colorNaviLine">#000000</color>
+    <color name="colorNaviText">#000000</color>
 
     <color name="colorAlarmSystemBar">#e64a19</color>
     <color name="colorAlarmToolBar">#ff5722</color>
@@ -51,43 +40,52 @@
     <color name="colorAlarmBack">#ffffff</color>
     <color name="colorAlarmFloatingActionButton">#ff5722</color>
     <color name="colorAlarmLine">#000000</color>
+    <color name="colorAlarmToolbarText">#ffffff</color>
+    <color name="colorAlarmSettingText">#000000</color>
+    <color name="colorAlarmListPrimaryText">#000000</color>
+    <color name="colorAlarmListSecondaryText">#000000</color>
+    <color name="colorAlarmPopText">#ffffff</color>
+    <color name="colorAlarmTextAuthorization">#2196f3</color>
+    <color name="colorAlarmTextDismissal">#ff5722</color>
 
     <color name="colorReminderSystemBar">#1976d2</color>
     <color name="colorReminderToolBar">#2196f3</color>
-    <color name="colorReminderListPrimary">#2397f3</color>
-    <color name="colorReminderListSecondary">#e3f2fd</color>
+    <color name="colorReminderList1Primary">#ef9a9a</color>
+    <color name="colorReminderList1Secondary">#ffebee</color>
+    <color name="colorReminderList2Primary">#ffe082</color>
+    <color name="colorReminderList2Secondary">#fff8e1</color>
+    <color name="colorReminderList3Primary">#90caf9</color>
+    <color name="colorReminderList3Secondary">#e3f2fd</color>
+    <color name="colorReminderList4Primary">#c5e1a5</color>
+    <color name="colorReminderList4Secondary">#f1f8e9</color>
+    <color name="colorReminderList5Primary">#e0e0e0</color>
+    <color name="colorReminderList5Secondary">#f5f5f5</color>
     <color name="colorReminderPop">#ffffff</color>
     <color name="colorReminderBack">#ffffff</color>
     <color name="colorReminderFloatingActionButton">#2196f3</color>
     <color name="colorReminderLine">#000000</color>
+    <color name="colorReminderToolbarText">#ffffff</color>
+    <color name="colorReminderSettingText">#000000</color>
+    <color name="colorReminderListPrimaryText">#000000</color>
+    <color name="colorReminderListSecondaryText">#000000</color>
 
 
 </resources>
 
 <!-- Comments
 <Day Mode>
-    <color name="colorAlarmToolbarText">#ffffff</color>
-    <color name="colorAlarmSettingText">#000000</color>
-    <color name="colorAlarmListPrimaryText">#000000</color>
-    <color name="colorAlarmListSecondaryText">#000000</color>
-    <color name="colorAlarmTextAuthorization">#ff5722</color>
-    <color name="colorAlarmTextDismissal">#2196f3</color>
-
-    <color name="colorReminderToolbarText">#ffffff</color>
-    <color name="colorReminderSettingText">#000000</color>
-    <color name="colorReminderListPrimaryText">#000000</color>
-    <color name="colorReminderListSecondaryText">#000000</color>
-
-    <color name="colorNaviText">#000000</color>
 
     <color name="colorHomeSystemBar">#7b1fa2</color>
     <color name="colorHomeToolBar">#9c27b0</color>
     <color name="colorHomeBack">#ffffff</color>
+    <color name="colorHomeAllSelect">#ffffff</color>
     <color name="colorHomeLine">#000000</color>
+    <color name="colorHomeText">#000000</color>
 
     <color name="colorNavi">#9c27b0</color>
     <color name="colorNaviBack">#ffffff</color>
     <color name="colorNaviLine">#000000</color>
+    <color name="colorNaviText">#000000</color>
 
     <color name="colorAlarmSystemBar">#e64a19</color>
     <color name="colorAlarmToolBar">#ff5722</color>
@@ -97,40 +95,47 @@
     <color name="colorAlarmBack">#ffffff</color>
     <color name="colorAlarmFloatingActionButton">#ff5722</color>
     <color name="colorAlarmLine">#000000</color>
+    <color name="colorAlarmToolbarText">#ffffff</color>
+    <color name="colorAlarmSettingText">#000000</color>
+    <color name="colorAlarmListPrimaryText">#000000</color>
+    <color name="colorAlarmListSecondaryText">#000000</color>
+    <color name="colorAlarmPopText">#ffffff</color>
+    <color name="colorAlarmTextAuthorization">#2196f3</color>
+    <color name="colorAlarmTextDismissal">#ff5722</color>
 
     <color name="colorReminderSystemBar">#1976d2</color>
     <color name="colorReminderToolBar">#2196f3</color>
-    <color name="colorReminderListPrimary">#2397f3</color>
-    <color name="colorReminderListSecondary">#e3f2fd</color>
+    <color name="colorReminderList1Primary">#ef9a9a</color>
+    <color name="colorReminderList1Secondary">#ffebee</color>
+    <color name="colorReminderList2Primary">#ffe082</color>
+    <color name="colorReminderList2Secondary">#fff8e1</color>
+    <color name="colorReminderList3Primary">#90caf9</color>
+    <color name="colorReminderList3Secondary">#e3f2fd</color>
+    <color name="colorReminderList4Primary">#c5e1a5</color>
+    <color name="colorReminderList4Secondary">#f1f8e9</color>
+    <color name="colorReminderList5Primary">#e0e0e0</color>
+    <color name="colorReminderList5Secondary">#f5f5f5</color>
     <color name="colorReminderPop">#ffffff</color>
     <color name="colorReminderBack">#ffffff</color>
     <color name="colorReminderFloatingActionButton">#2196f3</color>
     <color name="colorReminderLine">#000000</color>
-
-
-<Night Mode>
-    <color name="colorAlarmToolbarText">#ffffff</color>
-    <color name="colorAlarmSettingText">#ffffff</color>
-    <color name="colorAlarmListPrimaryText">#ffffff</color>
-    <color name="colorAlarmListSecondaryText">#000000</color>
-    <color name="colorAlarmTextAuthorization">#ffffff</color>
-    <color name="colorAlarmTextDismissal">#ffffff</color>
-
     <color name="colorReminderToolbarText">#ffffff</color>
     <color name="colorReminderSettingText">#000000</color>
     <color name="colorReminderListPrimaryText">#000000</color>
     <color name="colorReminderListSecondaryText">#000000</color>
 
-    <color name="colorNaviText">#ffffff</color>
-
+<Night Mode>
     <color name="colorHomeSystemBar">#7b1fa2</color>
     <color name="colorHomeToolBar">#9c27b0</color>
     <color name="colorHomeBack">#424242</color>
-    <color name="colorHomeLine">#909090</color>
+    <color name="colorHomeAllSelect">#757575</color>
+    <color name="colorHomeLine">#000000</color>
+    <color name="colorHomeText">#ffffff</color>
 
     <color name="colorNavi">#9c27b0</color>
-    <color name="colorNaviBack">#000000</color>
-    <color name="colorNaviLine">#909090</color>
+    <color name="colorNaviBack">#424242</color>
+    <color name="colorNaviLine">#000000</color>
+    <color name="colorNaviText">#ffffff</color>
 
     <color name="colorAlarmSystemBar">#000000</color>
     <color name="colorAlarmToolBar">#212121</color>
@@ -140,16 +145,34 @@
     <color name="colorAlarmBack">#424242</color>
     <color name="colorAlarmFloatingActionButton">#212121</color>
     <color name="colorAlarmLine">#000000</color>
+    <color name="colorAlarmToolbarText">#ffffff</color>
+    <color name="colorAlarmSettingText">#ffffff</color>
+    <color name="colorAlarmListPrimaryText">#000000</color>
+    <color name="colorAlarmListSecondaryText">#000000</color>
+    <color name="colorAlarmPopText">#ffffff</color>
+    <color name="colorAlarmTextAuthorization">#ffffff</color>
+    <color name="colorAlarmTextDismissal">#ffffff</color>
 
     <color name="colorReminderSystemBar">#1976d2</color>
     <color name="colorReminderToolBar">#2196f3</color>
-    <color name="colorReminderListPrimary">#2397f3</color>
-    <color name="colorReminderListSecondary">#e3f2fd</color>
+    <color name="colorReminderList1Primary">#ef9a9a</color>
+    <color name="colorReminderList1Secondary">#ffebee</color>
+    <color name="colorReminderList2Primary">#ffe082</color>
+    <color name="colorReminderList2Secondary">#fff8e1</color>
+    <color name="colorReminderList3Primary">#90caf9</color>
+    <color name="colorReminderList3Secondary">#e3f2fd</color>
+    <color name="colorReminderList4Primary">#c5e1a5</color>
+    <color name="colorReminderList4Secondary">#f1f8e9</color>
+    <color name="colorReminderList5Primary">#e0e0e0</color>
+    <color name="colorReminderList5Secondary">#f5f5f5</color>
     <color name="colorReminderPop">#ffffff</color>
     <color name="colorReminderBack">#ffffff</color>
     <color name="colorReminderFloatingActionButton">#2196f3</color>
     <color name="colorReminderLine">#000000</color>
-
+    <color name="colorReminderToolbarText">#ffffff</color>
+    <color name="colorReminderSettingText">#000000</color>
+    <color name="colorReminderListPrimaryText">#000000</color>
+    <color name="colorReminderListSecondaryText">#000000</color>
 
 
 -->
