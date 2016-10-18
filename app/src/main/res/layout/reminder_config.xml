@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.sakashun.alarmapplication.AlarmConfig"
-    tools:showIn="@layout/alarm_config_app_bar_main">
+    tools:showIn="@layout/reminder_config_app_bar_main">
 
     <View
         android:layout_width="match_parent"
@@ -16,8 +16,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAlarmBack">
+        android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -29,7 +28,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/alarm_list_linear"></LinearLayout>
+                android:id="@+id/reminder_list_linear"></LinearLayout>
         </ScrollView>
 
         <android.support.design.widget.FloatingActionButton

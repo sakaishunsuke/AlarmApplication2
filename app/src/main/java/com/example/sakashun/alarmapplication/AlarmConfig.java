@@ -67,7 +67,7 @@ public class AlarmConfig extends AppCompatActivity
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAlarmTitle)));
+        fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAlarmFloatingActionButton)));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

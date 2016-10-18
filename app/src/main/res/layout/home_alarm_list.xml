@@ -7,7 +7,7 @@
     android:nestedScrollingEnabled="false"
     android:longClickable="false"
     android:weightSum="1"
-    android:background="@color/colorAlarmListBack">
+    android:background="@color/colorAlarmBack">
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/Alarm_list_height"
-        android:background="@color/colorAlarmList"
+        android:background="@color/colorAlarmListSecondary"
         android:id="@+id/alarm_list_layout">
 
         <RelativeLayout
@@ -61,6 +61,6 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:background="@color/colorBlack"/>
+        android:background="@color/colorAlarmLine"/>
 
 </LinearLayout>

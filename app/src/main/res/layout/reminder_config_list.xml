@@ -12,13 +12,13 @@
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:mrl_rippleOverlay="true" >
         <RelativeLayout
-            android:id="@+id/alarm_list_layout"
+            android:id="@+id/reminder_list_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/Alarm_list_height"
-        android:background="@color/colorAlarmListSecondary">
+            android:background="@color/colorAlarmListSecondary">
 
 
         <View
@@ -48,15 +48,16 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="アラーム１"
+                    android:text="サンプル1"
                     android:id="@+id/list_name"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:textSize="@dimen/list_text_size"
                     android:layout_alignParentTop="true"
-                    android:textColor="@color/colorAlarmListPrimaryText"
-                    android:textIsSelectable="true" />
+                    android:textColor="#000000"
+                    android:textIsSelectable="false"
+                    android:focusable="false"
+                    android:maxLength="8" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -68,32 +69,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="10:55"
+                    android:text="10/16　10:55"
                     android:id="@+id/list_time"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:foregroundGravity="center|center_horizontal"
-                    android:gravity="center_vertical|center"
-                    android:textColor="@color/colorAlarmListSecondaryText"
+                    android:gravity="center_vertical|right"
+                    android:textColor="#000000"
                     android:textIsSelectable="false"
                     android:singleLine="true"
                     android:layout_weight="1"
-                    android:textSize="@dimen/list_text_size" />
+                    android:textSize="@dimen/list_text_size"
+                    android:paddingRight="10dp" />
 
-                <Switch
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/alarm_list_switch"
-                    android:checked="false"
-                    android:layout_marginRight="18dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true" />
             </RelativeLayout>
         </LinearLayout>
 
 
-
-        <LinearLayout
+            <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="10dp"
@@ -102,11 +95,12 @@
             android:layout_alignParentLeft="true"
             android:id="@+id/linearLayout2">
 
-        </LinearLayout>
+            </LinearLayout>
 
     </RelativeLayout>
 
     </com.balysv.materialripple.MaterialRippleLayout>
+
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"

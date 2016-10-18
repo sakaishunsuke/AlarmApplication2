@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/Alarm_list_height"
-        android:background="@color/colorHome">
+        android:background="@color/colorAlarmToolBar">
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
             android:textSize="@dimen/list_text_size"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            android:textColor="#ffffff" />
+            android:textColor="@color/colorAlarmToolbarText" />
 
         <EditText
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:layout_toRightOf="@+id/textView"
             android:gravity="center_vertical|right"
             android:inputType="text"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorAlarmToolbarText"
             android:text="アラーム"
             android:textSize="@dimen/list_text_size"
             android:shadowDx="0"
@@ -51,7 +51,7 @@
         android:id="@+id/alarm_make_content_scroll"
         android:layout_weight="8"
         android:fillViewport="true"
-        android:background="@color/colorAlarmListBack">
+        android:background="@color/colorAlarmBack">
 
         <LinearLayout
             android:orientation="vertical"
@@ -59,12 +59,13 @@
             android:layout_height="match_parent"
             android:baselineAligned="false"
             android:clickable="false"
-            android:contextClickable="false">
+            android:contextClickable="false"
+            android:background="@color/colorAlarmBack">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/colorBlack"/>
+                android:background="@color/colorAlarmLine"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/Alarm_list_height"
@@ -79,20 +80,20 @@
                     android:textSize="@dimen/list_text_size"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/imageView2"
-                    android:textColor="@color/colorAlarmText" />
+                    android:textColor="@color/colorAlarmSettingText" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="タッチして時間を\n設定してください"
+                    android:text="タップで時間設定"
                     android:id="@+id/alarm_time_text"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textView8"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:gravity="center_vertical|center"
-                    android:textColor="@color/colorAlarmText"
+                    android:textColor="@color/colorAlarmSettingText"
                     android:textSize="@dimen/list_text_size" />
 
                 <ImageView
@@ -109,7 +110,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/colorBlack"/>
+                android:background="@color/colorAlarmLine"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -139,7 +140,7 @@
                         android:textSize="@dimen/list_text_size"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/imageView3"
-                        android:textColor="@color/colorAlarmText" />
+                        android:textColor="@color/colorAlarmSettingText" />
 
                     <SeekBar
                         android:layout_width="match_parent"
@@ -160,7 +161,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/colorBlack"/>
+                android:background="@color/colorAlarmLine"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -185,7 +186,7 @@
                     android:textSize="@dimen/list_text_size"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/imageView4"
-                    android:textColor="@color/colorAlarmText" />
+                    android:textColor="@color/colorAlarmSettingText" />
 
                 <Switch
                     android:layout_width="wrap_content"
@@ -201,7 +202,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/colorBlack"/>
+                android:background="@color/colorAlarmLine"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -227,7 +228,7 @@
                     android:textSize="@dimen/list_text_size"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/imageView5"
-                    android:textColor="@color/colorAlarmText" />
+                    android:textColor="@color/colorAlarmSettingText" />
 
                 <Switch
                     android:layout_width="wrap_content"
@@ -242,7 +243,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/colorBlack"/>
+                android:background="@color/colorAlarmLine"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -270,21 +271,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_alignParentTop="true"
-                        android:id="@+id/relativeLayout">
+                        android:layout_alignParentTop="true">
 
                     </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="アラーム音"
-                        android:id="@+id/textView5"
-                        android:textColor="@color/colorAlarmText"
-                        android:gravity="left|center_vertical|center_horizontal"
-                        android:textSize="@dimen/list_text_size"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true" />
 
                 </RelativeLayout>
 
@@ -299,15 +288,28 @@
                     android:layout_toRightOf="@+id/imageView6"
                     android:textSize="18dp"
                     android:paddingBottom="1dp"
-                    android:textColor="@color/colorAlarmListBack"
+                    android:textColor="@color/colorAlarmSettingText"
                     android:maxLines="1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="アラーム音"
+                    android:id="@+id/textView5"
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="left|center_vertical|center_horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/imageView6"
+                    android:layout_above="@+id/music_name_text"
+                    android:textSize="@dimen/list_text_size" />
 
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/colorBlack"/>
+                android:background="@color/colorAlarmLine"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -333,7 +335,7 @@
                     android:textSize="@dimen/list_text_size"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/imageView7"
-                    android:textColor="@color/colorAlarmText" />
+                    android:textColor="@color/colorAlarmSettingText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -345,7 +347,7 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
-                    android:textColor="@color/colorAlarmText"
+                    android:textColor="@color/colorAlarmSettingText"
                     android:gravity="end" />
 
             </RelativeLayout>
@@ -353,7 +355,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/colorBlack"/>
+                android:background="@color/colorAlarmLine"/>
 
         </LinearLayout>
     </ScrollView>

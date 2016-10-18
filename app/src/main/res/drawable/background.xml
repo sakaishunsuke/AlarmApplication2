@@ -12,7 +12,7 @@
                 android:top="1dip" >
                 <stroke
                     android:width="36dip"
-                    android:color="@color/colorAlarmTitle" />
+                    android:color="@color/colorAlarmListPrimary" />
             </shape>
         </rotate>
     </item>
