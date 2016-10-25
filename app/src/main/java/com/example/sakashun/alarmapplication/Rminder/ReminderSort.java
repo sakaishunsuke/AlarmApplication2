@@ -66,6 +66,8 @@ public class ReminderSort {
         //ソートの数を教えて時間順にソートさせる。
         TimeBubbleSort(0,sort_kauz,1);
     }
+
+    //レベル順にソート
     public void LevelSort(){
         //今より後のもののみ取り出す
         sort_kauz = 0;
@@ -87,7 +89,6 @@ public class ReminderSort {
                     sort_number[i+1] = a;
                 }
             }
-            System.out.println("レベル順");
         }
         //レベル順の中で時間順にする
         for(int i=0;i<5;i++){
@@ -105,6 +106,8 @@ public class ReminderSort {
             System.out.println("レベル"+i+"ソート中");
         }
     }
+
+    //過去のを新しい順にソート
     public void OldSort(){
         //過去もののみ取り出す
         sort_kauz = 0;
@@ -115,6 +118,23 @@ public class ReminderSort {
         }
         //ソートの数を教えて時間順にソートさせる。
         TimeBubbleSort(0,sort_kauz,-1);
+    }
+
+    //今日のリマインダーのみを時間順にソート
+    public void TodaySort(){
+        sort_kauz = 0;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE));
+        calendar.add(Calendar.DATE,1);//明日の日付にする
+        for (int i=0;i<reminder_kazu;i++){
+            //今より後のもののみ取り出す
+            if (Calendar.getInstance().getTimeInMillis() < calendar_time[i] && calendar_time[i] <calendar.getTimeInMillis()){
+                sort_number[sort_kauz++] = i;
+            }
+        }
+        //ソートの数を教えて時間順にソートさせる。
+        TimeBubbleSort(0,sort_kauz,1);
+
     }
 
 }

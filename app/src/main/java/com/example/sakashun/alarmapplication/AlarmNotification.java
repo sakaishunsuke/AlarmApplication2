@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.example.sakashun.alarmapplication.Alarm.AlarmDataController;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,68 +68,6 @@ public class AlarmNotification extends Activity {
     Handler handler = new Handler();//定期処理
     private Camera camera = null;
 
-    void recordUpCount(String alarm_name,int alarm_list_number){
-        //現在のファイル内容を読み取る
-        System.out.println("現在のアラームファイルを読み取る");
-        int alarm_number_list[] = new int[20];//アラームの番号のチェックリスト
-        Arrays.fill(alarm_number_list, 0);//0で初期化
-        String alarm_time_list[] = new String[20];//時間の内容を入れる部分
-        int up_count[] = new int[20];
-        String copy[] = new String[20];//上書きの元データのコピー\
-        try {
-            InputStream in = openFileInput("alarm_list_data.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            String s;
-            while ((s = reader.readLine()) != null) {
-                //現在のアラームの書いてある内容を読み取る
-                //alarm_list_number= (int) Long.parseLong(s,0);
-                String[] strs = s.split(",");
-                alarm_number_list[Integer.parseInt(strs[0])] = 1;//チェックしていく
-                alarm_time_list[Integer.parseInt(strs[0])] = strs[1];//時間を保存
-                if (strs.length >= 3) {
-                    copy[Integer.parseInt(strs[0])] = strs[2];
-                } else {
-                    copy[Integer.parseInt(strs[0])] = "false";
-                }
-                if (strs.length >= 4) {
-                    up_count[Integer.parseInt(strs[0])] = Integer.parseInt(strs[3]);
-                } else {
-                    up_count[Integer.parseInt(strs[0])] = 0;
-                }
-            }
-            reader.close();
-        } catch (IOException e) {
-            //もし番号の取得に失敗つまりは、最初だった場合はファイルだけ新しく作る
-            e.printStackTrace();
-            System.out.println("error code 1");
-        }
-
-        //現在のファイル内容をさっきのデータをもとに上書き
-        System.out.println("アラーム管理ファイルを上書き");
-        //今回の設定を加える
-        alarm_number_list[alarm_list_number] = 1;
-        alarm_time_list[alarm_list_number] = alarm_name;
-        copy[alarm_list_number] = "true";
-        up_count[alarm_list_number]++;
-        OutputStream out;
-        try {
-            out = openFileOutput("alarm_list_data.txt", MODE_PRIVATE);
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
-            //追記する
-            for (int i = 0; i < 20; i++) {
-                if (alarm_number_list[i] == 1) {
-                    writer.append(i + "," + alarm_time_list[i] + "," + copy[i] + "," + up_count[i] +   "\n");//管理ファイルに書き込んでいく
-                }
-            }
-            writer.close();
-        } catch (IOException ee) {
-            // TODO 自動生成された catch ブロック
-            ee.printStackTrace();
-            System.out.println("error code 2");
-            //Toast.makeText(AlarmSetting.this,"アラームリスト番号の更新に失敗", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,8 +91,8 @@ public class AlarmNotification extends Activity {
         final int number = getIntent().getIntExtra("NUMBER",-1);
 
         //ホントにならすべきかチェック
-        alarmController = new AlarmController();
-        if(number != -1  && !alarmController.AlarmChec(this,number)){
+        alarmController = new AlarmController(this);
+        if(number != -1  && !alarmController.AlarmChec(number)){
             Intent intent = new Intent(AlarmNotification.this,
                     com.example.sakashun.alarmapplication.MainActivity.class);
             startActivity(intent);
@@ -164,7 +104,7 @@ public class AlarmNotification extends Activity {
         mainLayout = (LinearLayout) findViewById(R.id.alarm_screen_layout);
 
         //button設定
-        Button alarm_stop_button[] = new Button[4];
+        final Button alarm_stop_button[] = new Button[4];
         alarm_stop_button[0]= (Button) findViewById(R.id.alarm_stop_button1);
         alarm_stop_button[1]= (Button) findViewById(R.id.alarm_stop_button2);
         alarm_stop_button[2]= (Button) findViewById(R.id.alarm_stop_button3);
@@ -176,42 +116,19 @@ public class AlarmNotification extends Activity {
         //アラームの音などの設定
         if(number!=-1) {
             //各種内容を取得
-            try {
-                InputStream in = openFileInput("alarm_data" + number + ".txt");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-                String s;
-                System.out.println("中身を読み取り、アラーム画面に反映させる");
-                while ((s = reader.readLine()) != null) {
-                    //現在のアラームの番号を受け取る
-                    System.out.println("中身は" + s + "←");
-                    //alarm_list_number= (int) Long.parseLong(s,0);
-                    String[] strs = s.split(",");
-                    if (strs[0].matches("name")) {
-                        alarm_name.setText(strs[1]);
-                    } else if (strs[0].matches("volume")) {
-                        volume = Integer.parseInt(strs[1]);
-                    } else if (strs[0].matches("vibrator")) {
-                        vibrator = strs[1].matches("true");
-                    } else if (strs[0].matches("light")) {
-                        light = strs[1].matches("true");
-                    } else if (strs[0].matches("music")) {
-                        music_uri = Uri.parse(strs[1]);
-                        mp = MediaPlayer.create(this, music_uri);
-                    } else if (strs[0].matches("sunuzu")) {
-                        if(strs[1].matches("なし")){
-                            sunuzu = 0;
-                        }else {
-                            String[] strs2 = strs[1].split("分");
-                            sunuzu = Integer.parseInt(strs2[0]);
-                        }
-                    }
-                }
-                reader.close();
-            } catch (IOException e) {
-                //アラーム内容の取得に失敗
-                e.printStackTrace();
-            }
+            AlarmDataController alarmDataControlle = new AlarmDataController(this);
+            alarmDataControlle.OpenFile();
 
+            volume = alarmDataControlle.volume[number];
+            vibrator = alarmDataControlle.vibrator[number];
+            light = alarmDataControlle.light[number];
+            music_uri = Uri.parse(alarmDataControlle.music_uri[number]);
+            mp = MediaPlayer.create(this, music_uri);
+            if(alarmDataControlle.sunuzu[number].matches("なし")){
+                sunuzu = 0;
+            }else {
+                sunuzu = Integer.parseInt(alarmDataControlle.sunuzu[number].split("分")[0]);
+            }
         }
 
         //終了
@@ -219,9 +136,9 @@ public class AlarmNotification extends Activity {
             @Override
             public  void onClick(View v){
                 if(number!=-1) {
-                    alarmController = new AlarmController();
-                    alarmController.AlarmOneCancel(AlarmNotification.this, number);
-                    recordUpCount((String) alarm_name.getText(),number);//起動したことを記録する
+                    alarmController = new AlarmController(AlarmNotification.this);
+                    alarmController.AlarmOneCancel(number);
+                    new AlarmDataController(AlarmNotification.this).UseCount(number);//起動したことを記録する
                 }
                 finish();
             }
@@ -233,8 +150,10 @@ public class AlarmNotification extends Activity {
             @Override
             public  void onClick(View v){
                 if(number!=-1 && sunuzu!=0) {
-                    alarmController = new AlarmController();
-                    alarmController.AlarmSunuzuSet(AlarmNotification.this, number,sunuzu);
+                    alarmController = new AlarmController(AlarmNotification.this);
+                    alarmController.AlarmSunuzuSet(number,sunuzu);
+                    alarmController.AlarmOneCancel(number);
+                    new AlarmDataController(AlarmNotification.this).UseCount(number);//起動したことを記録する
                     finish();
                 }
             }

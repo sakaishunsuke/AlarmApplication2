@@ -29,7 +29,7 @@ public class ReminderFileController {
         context = applicationContext;
     }
 
-    public boolean OpenFile(){
+    /*public boolean OpenFile(){
         try{
             InputStream in = context.openFileInput(context.getString(R.string.reminder_file_name));
             BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
@@ -57,9 +57,27 @@ public class ReminderFileController {
             e.printStackTrace();
             return false;
         }
+    }*/
+
+    private String Gs(int string_id){
+        return context.getString(string_id);
     }
 
-    public boolean DeleteFile(int number){
+    public boolean OpenFile(){
+        reminder_kazu = new Pref().GetInt(context,Gs(R.string.reminder_list_name),Gs(R.string.reminder_list_number));
+        for(int i=0;i<reminder_kazu;i++){
+            name[i] = new Pref().GetString(context,( Gs(R.string.reminder_data_name)+i),"name");
+            hiduke[i] = new Pref().GetString(context,( Gs(R.string.reminder_data_name)+i),"hiduke");
+            time[i] = new Pref().GetString(context,( Gs(R.string.reminder_data_name)+i),"time");
+            level[i] = new Pref().GetString(context,( Gs(R.string.reminder_data_name)+i),"level");
+            memo_content[i] = new Pref().GetString(context,( Gs(R.string.reminder_data_name)+i),"memo_content");
+            System.out.println(i+"番目の内容↓");
+            System.out.println(name[i]+","+hiduke[i]+","+time[i]+","+level[i]+","+memo_content[i]);
+        }
+        return true;
+    }
+
+    /*public boolean DeleteFile(int number){
         try {
             OutputStream out = context.openFileOutput(context.getString(R.string.reminder_file_name),context.MODE_PRIVATE);
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
@@ -76,9 +94,28 @@ public class ReminderFileController {
             e.printStackTrace();
             return false;
         }
+    }*/
+    public boolean DeleteFile(int number) {
+        OpenFile();
+        int write_count=0;
+        for (int i = 0; i < reminder_kazu; i++) {
+            if (number != i) {
+                System.out.println(write_count + "番目の内容を保存↓");
+                System.out.println(name[i]+","+hiduke[i]+","+time[i]+","+level[i]+","+memo_content[i]);
+                new Pref(context, (Gs(R.string.reminder_data_name) + write_count), "name", name[i]);
+                new Pref(context, (Gs(R.string.reminder_data_name) + write_count), "hiduke", hiduke[i]);
+                new Pref(context, (Gs(R.string.reminder_data_name) + write_count), "time", time[i]);
+                new Pref(context, (Gs(R.string.reminder_data_name) + write_count), "level", level[i]);
+                new Pref(context, (Gs(R.string.reminder_data_name) + write_count), "memo_content", memo_content[i]);
+                write_count++;
+            }
+        }
+        //ひとつへったことを記録
+        new Pref(context,Gs(R.string.reminder_list_name), Gs(R.string.reminder_list_number),reminder_kazu-1 );
+        return true;
     }
 
-    public boolean SaveFile(String r_name,String r_hiduke,String r_time,String r_level,String r_memo_content){
+    /*public boolean SaveFile(String r_name,String r_hiduke,String r_time,String r_level,String r_memo_content){
         try {
             OutputStream out = context.openFileOutput(context.getString(R.string.reminder_file_name),context.MODE_APPEND);
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
@@ -91,5 +128,18 @@ public class ReminderFileController {
             e.printStackTrace();
             return false;
         }
+    }*/
+    public boolean SaveFile(String r_name,String r_hiduke,String r_time,String r_level,String r_memo_content) {
+        reminder_kazu = new Pref().GetInt(context,Gs(R.string.reminder_list_name),Gs(R.string.reminder_list_number));
+        System.out.println(reminder_kazu + "番目に内容を追加↓");
+        System.out.println(r_name + "," + r_hiduke + "," + r_time + "," + r_level + "," + r_memo_content);
+        new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu ), "name", r_name);
+        new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu ), "hiduke", r_hiduke);
+        new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu ), "time", r_time);
+        new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu ), "level", r_level);
+        new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu ), "memo_content", r_memo_content);
+        //ひとつ増えたことを記録
+        new Pref(context,Gs(R.string.reminder_list_name), Gs(R.string.reminder_list_number),reminder_kazu+1 );
+        return true;
     }
 }

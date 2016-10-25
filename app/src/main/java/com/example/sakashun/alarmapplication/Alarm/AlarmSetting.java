@@ -1,13 +1,11 @@
-package com.example.sakashun.alarmapplication;
+package com.example.sakashun.alarmapplication.Alarm;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,13 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -33,46 +25,36 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.sakashun.alarmapplication.AlarmController;
+import com.example.sakashun.alarmapplication.R;
+
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.io.IOException;
 
 /**\data
  * Created by Saka Shun on 2016/09/05.
  */
-public class AlarmSetting extends ActionBarActivity {
+public class AlarmSetting extends ActionBarActivity{
 
-    TextView screen_name_text;//この画面の名前
-    int alarm_list_number = 0;//アラームの番号
-    TextView alarm_make_finish;//登録ボタン
-    EditText alarm_name;//アラームの名前(タイトル)
-    TextView alarm_time_text;//アラームの時間
+    EditText name;//アラームの名前(タイトル)
+    TextView time_text;//アラームの時間
     RelativeLayout alarm_time_layout;//アラームの時間のレイアウト
     SeekBar volumeSeekbar;//音量シークバー
     Switch vibrator_switch;//バイブレーション
@@ -95,9 +77,13 @@ public class AlarmSetting extends ActionBarActivity {
     AlarmController alarmController;//アラームセットの準備
     //実際にセットしているのはalarm_makeの中の上書き直後
 
+    AlarmDataController alarmDataController;//アラームのデータ管理クラス
+
+    int edit_number = -1;//編集中か判断する　-1＝新規。-1！=編集
+
     public void linkSet() {
-        alarm_name = (EditText) findViewById(R.id.alarm_name);//アラームの名前(タイトル)
-        alarm_time_text = (TextView) findViewById(R.id.alarm_time_text);//アラームの時間
+        name = (EditText) findViewById(R.id.alarm_name);//アラームの名前(タイトル)
+        time_text = (TextView) findViewById(R.id.alarm_time_text);//アラームの時間
         alarm_time_layout = (RelativeLayout) findViewById(R.id.alarm_time_layout);//アラームの時間のレイアウト
         volumeSeekbar = (SeekBar) findViewById(R.id.volumeSeekbar);//音量シークバー
         vibrator_switch = (Switch) findViewById(R.id.vibrator_switch);//バイブレーション
@@ -112,6 +98,21 @@ public class AlarmSetting extends ActionBarActivity {
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);//キーボードのオブジェクト設定
         mainLayout = (LinearLayout) findViewById(R.id.setting_liner);//このアクティビティのレイアウト取得
 
+        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);// AudioManagerを取得する
+        now_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);//曲再生時の音量を取得
+
+        alarmDataController = new AlarmDataController(AlarmSetting.this);//データ管理クラスを使用できるようにする
+    }
+
+    void defaultSet(){
+        // 現在時刻を取得
+        Calendar calendar = Calendar.getInstance();
+        //10分後にする
+        //calendar.add(Calendar.MINUTE, 10);
+        //今の時間を設定
+        time_text.setText(String.format("%02d:%02d",calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE) ));
+        
         mp = MediaPlayer.create(this, music_uri);//アラームのデフォルトの曲をセット
         mp.setLooping(true);//リピート設定
         System.out.println("uriだよ　" + music_uri.toString());
@@ -132,190 +133,79 @@ public class AlarmSetting extends ActionBarActivity {
            */
         }
         //Toast.makeText(this, "初期設定の曲の名前が取得できませんでした", Toast.LENGTH_SHORT).show();
-        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);// AudioManagerを取得する
-        now_volume = am.getStreamVolume(AudioManager.STREAM_MUSIC);//曲再生時の音量を取得
+    }
+    
+    void editSet(){
+        //各値をファイルからとってくる
+        AlarmDataController alarmDataController = new AlarmDataController(AlarmSetting.this);
+        alarmDataController.OpenFile();
+        //タイトルをセット
+        name.setText(alarmDataController.name[edit_number]);
+        //時間をセット
+        time_text.setText(alarmDataController.time[edit_number]);
+        volumeSeekbar.setProgress(alarmDataController.volume[edit_number]);
+        vibrator_switch.setChecked(alarmDataController.vibrator[edit_number]);
+        light_switch.setChecked(alarmDataController.light[edit_number]);
+        music_uri = Uri.parse(alarmDataController.music_uri[edit_number]);
+            mp=MediaPlayer.create(this,music_uri);
+        music_name_text.setText(alarmDataController.music_name[edit_number]);
+        sunuzu_text.setText(alarmDataController.sunuzu[edit_number]);
+        
     }
 
-    public void numberGet() {
-        //アラームの番号取得
-        try {
-            InputStream in = openFileInput("alarm_list_data.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            String s;
-            int chec_list[] = new int[20];//アラームの番号のチェックリスト
-            Arrays.fill(chec_list, 0);//0で初期化
-            while ((s = reader.readLine()) != null) {
-                //現在のアラームの番号を受け取る
-                System.out.println("中身は" + s + "←");
-                if (s != "\n") {
-                    //alarm_list_number= (int) Long.parseLong(s,0);
-                    String[] strs = s.split(",");
-                    for (int i = 0; i < strs.length; i++) {
-                        System.out.println(String.format("分割後 %d 個目の文字列 -> %s", i + 1, strs[i]));
-                    }
-                    chec_list[Integer.parseInt(strs[0])] = 1;//チェックしていく
-                } else {
-                    System.out.println("結果NULLでした");
-                }
-            }
-            int i = 0;
-            while (i < 20 && chec_list[i] != 0) {
-                i++;//まだ使われていないのを探す。
-            }
-            alarm_list_number = i;
-            reader.close();
-            alarm_name.setText("アラーム" + (alarm_list_number + 1));
-        } catch (IOException e) {
-            //もし番号の取得に失敗つまりは、最初だった場合はファイルだけ新しく作る
-            alarm_list_number = 0;
-            e.printStackTrace();
-            OutputStream out;
-            try {
-                out = openFileOutput("alarm_list_data.txt", MODE_PRIVATE);
-                PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
-                //追記する
-                //writer.append("1\n");
-                writer.close();
-            } catch (IOException ee) {
-                // TODO 自動生成された catch ブロック
-                ee.printStackTrace();
-                Toast.makeText(AlarmSetting.this, "アラーム番号の初回設定に失敗", Toast.LENGTH_SHORT).show();
-            }
-            alarm_name.setText("アラーム" + (alarm_list_number + 1));
-        }
-    }
-
-    public void alarm_make() {
-        if (alarm_time_text.getText().toString().matches(".*:.*") == false) {
+    void alarm_make() {
+        if (time_text.getText().toString().matches(".*:.*") == false) {
             Toast.makeText(AlarmSetting.this, "時間を設定してください", Toast.LENGTH_SHORT).show();
             return;
         }
         //フォーカスを背景にもっていく
         mainLayout.requestFocus();
 
-        OutputStream out;
-        try {
-            out = openFileOutput("alarm_data" + alarm_list_number + ".txt", MODE_PRIVATE);
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
-
-            //追記する
-            writer.append("name," + alarm_name.getText() + "\n");
-            writer.append("time," + alarm_time_text.getText() + "\n");
-            writer.append("volume," + volumeSeekbar.getProgress() + "\n");
-            writer.append("vibrator," + vibrator_switch.isChecked() + "\n");
-            writer.append("light," + light_switch.isChecked() + "\n");
-            writer.append("music," + music_uri.toString() + "\n");
-            writer.append("music_name," + music_name_text.getText() + "\n");
-            writer.append("sunuzu," + sunuzu_text.getText() + "\n");
-            writer.close();
-        } catch (IOException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
-            Toast.makeText(AlarmSetting.this, "登録に失敗しました", Toast.LENGTH_SHORT).show();
-            finish();
+        int hindo = 0;
+        if(edit_number != -1){
+            hindo = alarmDataController.hindo[edit_number];
+            alarmDataController.DeleteFile(edit_number);
         }
+        alarmDataController.SaveFile(
+                name.getText().toString(),
+                time_text.getText().toString(),
+                volumeSeekbar.getProgress(),
+                vibrator_switch.isChecked(),
+                light_switch.isChecked(),
+                music_uri.toString(),
+                music_name_text.getText().toString(),
+                sunuzu_text.getText().toString(),
+                false,
+                hindo
+        );
         //無事保存に成功したら
 
-        //現在のファイル内容を読み取る
-        System.out.println("現在のアラームファイルを読み取る");
-        int alarm_number_list[] = new int[20];//アラームの番号のチェックリスト
-        Arrays.fill(alarm_number_list, 0);//0で初期化
-        String alarm_time_list[] = new String[20];//時間の内容を入れる部分
-        int up_count[] = new int[20];
-        String copy[] = new String[20];//上書きの元データのコピー\
-        try {
-            InputStream in = openFileInput("alarm_list_data.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            String s;
-            while ((s = reader.readLine()) != null) {
-                //現在のアラームの書いてある内容を読み取る
-                //alarm_list_number= (int) Long.parseLong(s,0);
-                String[] strs = s.split(",");
-                alarm_number_list[Integer.parseInt(strs[0])] = 1;//チェックしていく
-                alarm_time_list[Integer.parseInt(strs[0])] = strs[1];//時間を保存
-                if (strs.length >= 3) {
-                    copy[Integer.parseInt(strs[0])] = strs[2];
-                } else {
-                    copy[Integer.parseInt(strs[0])] = "false";
-                }
-                if (strs.length >= 4) {
-                    up_count[Integer.parseInt(strs[0])] = Integer.parseInt(strs[3]);
-                } else {
-                    up_count[Integer.parseInt(strs[0])] = 0;
-                }
-            }
-            reader.close();
-        } catch (IOException e) {
-            //もし番号の取得に失敗つまりは、最初だった場合はファイルだけ新しく作る
-            e.printStackTrace();
-            System.out.println("error code 1");
-        }
-
-        //現在のファイル内容をさっきのデータをもとに上書き
-        System.out.println("アラーム管理ファイルを上書き");
-        //今回の設定を加える
-        alarm_number_list[alarm_list_number] = 1;
-        alarm_time_list[alarm_list_number] = (String) alarm_time_text.getText();
-        copy[alarm_list_number] = "true";
-        up_count[alarm_list_number]=0;
-        try {
-            out = openFileOutput("alarm_list_data.txt", MODE_PRIVATE);
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
-            //追記する
-            for (int i = 0; i < 20; i++) {
-                if (alarm_number_list[i] == 1) {
-                    writer.append(i + "," + alarm_time_list[i] + "," + copy[i] + "," + up_count[i] +   "\n");//管理ファイルに書き込んでいく
-                }
-            }
-            writer.close();
-        } catch (IOException ee) {
-            // TODO 自動生成された catch ブロック
-            ee.printStackTrace();
-            System.out.println("error code 2");
-            //Toast.makeText(AlarmSetting.this,"アラームリスト番号の更新に失敗", Toast.LENGTH_SHORT).show();
-        }
-
         //アラームのセット
-        alarmController = new AlarmController();
-        alarmController.AlarmOneSet(AlarmSetting.this,alarm_list_number);
+        alarmController = new AlarmController(AlarmSetting.this);
+        alarmController.AlarmOneSet(alarmDataController.alarm_kazu-1);
 
-        System.out.println("内容確認↓");
-        try {
-            InputStream in = openFileInput("alarm_data" + alarm_list_number + ".txt");
-            //InputStream in = openFileInput("alarm_list_data.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            String s;
-            while ((s = reader.readLine()) != null) {
-                //内容をどんどん表示
-                System.out.println(s);
-            }
-            reader.close();
-        } catch (IOException e) {
-            // TODO 自動生成された catch ブロッ
-            e.printStackTrace();
-            System.out.println("error code 3");
-        }
         finish();
     }
 
+    //名前のフォーカス時の処理
     public void nameSet(){
         //アラームの名前のフォーカス設定
-        alarm_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
                     //受け取った時
-                    if(alarm_name.getText().toString().equals( ("アラーム"+ (alarm_list_number+1) ) ) ) {
-                        alarm_name.setText("");
+                    if(name.getText().toString().equals("アラーム") ) {
+                        name.setText("");
                     }
                 }else{
                     //離れた時
                     System.out.println("離れフォーカスメソッド起動！");
-                    if(alarm_name.getText().toString().equals("")) {
-                        alarm_name.setText("アラーム" + (alarm_list_number + 1));
+                    if(name.getText().toString().equals("")) {
+                        name.setText("アラーム");
                     }else {
                         //空白のみで埋めていないか
-                        String[] strs = alarm_name.getText().toString().split(" ");
+                        String[] strs = name.getText().toString().split(" ");
                         boolean flag = true;
                         for (int i = 0; i < strs.length && flag; i++) {
                             if(!strs[i].matches("")){
@@ -323,7 +213,7 @@ public class AlarmSetting extends ActionBarActivity {
                             }
                         }
                         if(flag) {
-                            alarm_name.setText("アラーム" + (alarm_list_number + 1));
+                            name.setText("アラーム");
                         }
                     }
                     // キーボードを隠す
@@ -333,7 +223,7 @@ public class AlarmSetting extends ActionBarActivity {
             }
         });
         //EditTextにリスナーをセット（要はキーボードで決定した時に↑のフォーカス離れの機能が動くようにする文）
-        alarm_name.setOnKeyListener(new View.OnKeyListener() {
+        name.setOnKeyListener(new View.OnKeyListener() {
             //コールバックとしてonKey()メソッドを定義
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -347,19 +237,34 @@ public class AlarmSetting extends ActionBarActivity {
             }
         });
     }
-    public void timeSet(){
-        //アラーム時間のボタン
-        alarm_time_layout.setOnClickListener(new View.OnClickListener(){
+
+    //時計ダイアログの処理
+    public void timeSet() {
+        //リマインダー日付のボタン
+        alarm_time_layout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                TimePickerDialogFragment timePicker = new TimePickerDialogFragment();
-                //timePicker.getShowsDialog();
-                //アラームの時間を決める時に時間のダイアログを出す
-                timePicker.show(getFragmentManager(), "timePicker");
+            public void onClick(View v) {
+
+                final String strs[] = time_text.getText().toString().split(":");
+                // 時間選択ダイアログの生成
+                TimePickerDialog timepick = new TimePickerDialog(
+                        AlarmSetting.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            public void onTimeSet(TimePicker view,int hourOfDay, int minute) {
+                                // 設定 ボタンクリック時の処理
+                                //時刻が選択されたときの処理
+                                time_text.setText(String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute));
+                            }
+                        },
+                        Integer.parseInt(strs[0]),  //textに入っている日付をセット
+                        Integer.parseInt(strs[1]),
+                        true);
+                timepick.show();// 表示
             }
         });
 
     }
+
     public void seekbarSet(){
         //音量シークバー設定
         volumeSeekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -402,8 +307,9 @@ public class AlarmSetting extends ActionBarActivity {
             }
         });
     }
+
     public void vibrator_ledSet() {
-        //追われたら反転するようにする
+        //おされたら反転するようにする
         vibrator_layout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -473,17 +379,24 @@ public class AlarmSetting extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_setting_activity_main);
-
+        
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("アラーム追加");
         setSupportActionBar(toolbar);
-
+        
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
+        
         linkSet();//各フィールドとレイアウトをつなげる
-        numberGet();//この新規アラームの番号を取得する
+        //編集できたかチェック
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("Edit",false) && (edit_number = intent.getIntExtra("number",-1)) != -1){
+            toolbar.setTitle("アラームの編集");
+            editSet();
+        }else{
+            defaultSet();
+        }
         nameSet();//アラームの名前系の内容
         timeSet();//アラームの時刻系の内容
         seekbarSet();//シークバーの内容
@@ -538,42 +451,21 @@ public class AlarmSetting extends ActionBarActivity {
         }
     }
 
-    //時計ダイアログの処理
-    @SuppressLint("ValidFragment")
-    public class TimePickerDialogFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), this, hour, minute, true);
-
-            return timePickerDialog;
-        }
-
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            //時刻が選択されたときの処理
-            //alarm_time.setFormat24Hour(String.valueOf(hourOfDay)+":"+String.format("%02d", minute));
-            alarm_time_text.setText(String.format("%02d", hourOfDay)+":"+String.format("%02d", minute));
-            alarm_time_text.setTextSize(30);
-        }
-    }
-
-
     // 右上の追加の部分
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.alarm_setting_main, menu);
         MenuItem item = menu.findItem(R.id.action_save);
-        item.setTitle("追加");
+        if(edit_number == -1){
+            item.setTitle("追加");
+        }else{
+            item.setTitle("保存");
+        }
         return true;
     }
-
     //ツールバーのボタンの内容
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -595,12 +487,21 @@ public class AlarmSetting extends ActionBarActivity {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop(){
+        super.onStop();
         //もし曲がセットされていたら
         if (mp != null) {
             // 再生終了
             mp.stop();
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //もし曲がセットされていたら
+        if (mp != null) {
             // リソースの解放
             mp.release();
         }

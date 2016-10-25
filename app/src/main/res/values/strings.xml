@@ -1,12 +1,19 @@
 <resources>
-    <string name="app_name">AlarmApplication</string>
+    <string name="app_name">AlReちゃん</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+
+    <string name="alarm_list_name">alarm_list</string>
+    <string name="alarm_list_number">alarm_list_number</string>
+    <string name="alarm_data_name">alarm_data</string>
+
     <string name="action_settings">通知レベルの設定</string>
 
-    <string name="reminder_file_name">reminder_list</string>
+    <string name="reminder_list_name">reminder_list</string>
+    <string name="reminder_list_number">reminder_list_number</string>
+    <string name="reminder_data_name">reminder_data</string>
 
     <string name="reminder_config_title_time">時間順</string>
     <string name="reminder_config_title_level">レベル順</string>

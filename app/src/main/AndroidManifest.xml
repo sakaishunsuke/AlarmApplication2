@@ -33,18 +33,12 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".AlarmSetting"
+            android:name=".Alarm.AlarmSetting"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
-            android:label="@string/app_name"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
-            android:name=".AlarmEdit"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
         <receiver android:name=".AlarmReceiver">
         </receiver>
         <activity

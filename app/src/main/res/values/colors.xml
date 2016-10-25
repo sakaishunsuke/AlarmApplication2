@@ -50,16 +50,16 @@
 
     <color name="colorReminderSystemBar">#1976d2</color>
     <color name="colorReminderToolBar">#2196f3</color>
-    <color name="colorReminderList1Primary">#ef9a9a</color>
-    <color name="colorReminderList1Secondary">#ffebee</color>
-    <color name="colorReminderList2Primary">#ffe082</color>
-    <color name="colorReminderList2Secondary">#fff8e1</color>
+    <color name="colorReminderList5Primary">#ef9a9a</color>
+    <color name="colorReminderList5Secondary">#ffebee</color>
+    <color name="colorReminderList4Primary">#ffe082</color>
+    <color name="colorReminderList4Secondary">#fff8e1</color>
     <color name="colorReminderList3Primary">#90caf9</color>
     <color name="colorReminderList3Secondary">#e3f2fd</color>
-    <color name="colorReminderList4Primary">#c5e1a5</color>
-    <color name="colorReminderList4Secondary">#f1f8e9</color>
-    <color name="colorReminderList5Primary">#e0e0e0</color>
-    <color name="colorReminderList5Secondary">#f5f5f5</color>
+    <color name="colorReminderList2Primary">#c5e1a5</color>
+    <color name="colorReminderList2Secondary">#f1f8e9</color>
+    <color name="colorReminderList1Primary">#e0e0e0</color>
+    <color name="colorReminderList1Secondary">#f5f5f5</color>
     <color name="colorReminderPop">#ffffff</color>
     <color name="colorReminderBack">#ffffff</color>
     <color name="colorReminderFloatingActionButton">#2196f3</color>

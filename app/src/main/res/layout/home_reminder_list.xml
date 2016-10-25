@@ -18,12 +18,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:mrl_rippleOverlay="true" >
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/Alarm_list_height"
-        android:background="@color/colorAlarmListSecondary"
-        android:id="@+id/alarm_list_layout">
+        android:background="@color/colorReminderList1Secondary"
+        android:id="@+id/reminder_list_layout">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="アラーム1"
+                android:text="買い物"
                 android:id="@+id/list_name"
                 android:layout_weight="1"
                 android:textSize="@dimen/list_text_size"
@@ -54,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="7:00"
+                android:text="17:00"
                 android:id="@+id/list_time"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -63,6 +65,5 @@
         </RelativeLayout>
     </LinearLayout>
     </com.balysv.materialripple.MaterialRippleLayout>
-
 
 </LinearLayout>

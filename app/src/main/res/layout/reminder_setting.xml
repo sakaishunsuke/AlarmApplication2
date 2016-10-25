@@ -8,7 +8,6 @@
     android:id="@+id/setting_liner"
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.sakashun.alarmapplication.AlarmSetting"
     tools:showIn="@layout/reminder_setting_app_bar_main">
 
 
@@ -153,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="レベル5"
+                    android:text="レベル1"
                     android:id="@+id/level_text"
                     android:textSize="@dimen/list_text_size"
                     android:layout_centerVertical="true"

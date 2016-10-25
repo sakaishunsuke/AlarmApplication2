@@ -113,6 +113,14 @@ public class ReminderSetting extends ActionBarActivity {
         alarmController = new AlarmController();
         alarmController.AlarmOneSet(ReminderSetting.this,alarm_list_number);
         */
+
+        //通知表示実験
+        MyNotif myNotif = new MyNotif(this);
+        Intent intent = new Intent(getApplication(),ReminderSetting.class);
+        intent.putExtra("Edit",true);
+        intent.putExtra("number",reminderFileController.reminder_kazu);
+        myNotif.PushNotif_Activity(title_edit.getText().toString(),memo_content_edit.getText().toString(),intent);
+
         finish();
     }
 
@@ -248,6 +256,19 @@ public class ReminderSetting extends ActionBarActivity {
         });
     }
 
+    void defaultSet(){
+        // 現在時刻を取得
+        Calendar calendar = Calendar.getInstance();
+        //10分後にする
+        calendar.add(Calendar.MINUTE, 10);
+        //今日の日付をセット
+        hiduke_text.setText(calendar.get(Calendar.YEAR)+"/"+
+                (calendar.get(Calendar.MONTH)+1)+"/"+
+                calendar.get(Calendar.DAY_OF_MONTH));
+        //今の時間を設定
+        time_text.setText(String.format("%02d:%02d",calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE) ));
+    }
 
     void editSet(){
         //各値をファイルからとってくる
@@ -265,19 +286,6 @@ public class ReminderSetting extends ActionBarActivity {
         memo_content_edit.setText(reminderFileController.memo_content[edit_number]);
     }
 
-    void defaultSet(){
-        // 現在時刻を取得
-        Calendar calendar = Calendar.getInstance();
-        //10分後にする
-        calendar.add(Calendar.MINUTE, 10);
-        //今日の日付をセット
-        hiduke_text.setText(calendar.get(Calendar.YEAR)+"/"+
-                (calendar.get(Calendar.MONTH)+1)+"/"+
-                calendar.get(Calendar.DAY_OF_MONTH));
-        //今の時間を設定
-        time_text.setText(calendar.get(Calendar.HOUR_OF_DAY)+":"+
-                calendar.get(Calendar.MINUTE) );
-    }
 
     // 画面タップ時の処理 フォーカスを背景に移すため(あんま意味ない)
     @Override
@@ -288,6 +296,39 @@ public class ReminderSetting extends ActionBarActivity {
         // 背景にフォーカスを移す
         mainLayout.requestFocus();
         return true;
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.reminder_setting_activity_main);
+
+        //ツールバーの設定
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("リマインダーの追加");
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        linkSet();//各フィールドとレイアウトをつなげる
+        //編集で鈍できたか確認
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("Edit",false)){
+            toolbar.setTitle("リマインダーの編集");
+            if( (edit_number = intent.getIntExtra("number",-1)) == -1){
+                finish();
+            }
+            editSet();
+        }else{
+            defaultSet();
+        }
+        nameSet();//アラームの名前系の内容
+        hidukeSet();//アラームの日付系の内容
+        timeSet();//アラームの時刻系の内容
+        levelSet();//レベルの設定
+
     }
 
     // 右上の追加の部分
@@ -324,36 +365,5 @@ public class ReminderSetting extends ActionBarActivity {
         return result;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.reminder_setting_activity_main);
-
-        //ツールバーの設定
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("リマインダーの追加");
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        linkSet();//各フィールドとレイアウトをつなげる
-        //編集で鈍できたか確認
-        Intent intent = getIntent();
-        if(intent.getBooleanExtra("Edit",false)){
-            toolbar.setTitle("リマインダーの編集");
-            if( (edit_number = intent.getIntExtra("number",-1)) == -1){
-                finish();
-            }
-            editSet();
-        }else{
-            defaultSet();
-        }
-        nameSet();//アラームの名前系の内容
-        hidukeSet();//アラームの日付系の内容
-        timeSet();//アラームの時刻系の内容
-        levelSet();//レベルの設定
-
-    }
 
 }

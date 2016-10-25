@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.example.sakashun.alarmapplication.Alarm.AlarmDataController;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +22,9 @@ import java.util.Calendar;
  */
 public class AlarmController{
 
+    Context context;
+    AlarmDataController alarmDataController = null;
+    /*
     private class AlarmFile{
         boolean open_chec = false;//ファイルが無事に開けたか確認
         boolean alarm_chec = false;//アラームがon設定になっているか
@@ -28,6 +33,8 @@ public class AlarmController{
         int minute;     //アラームの分
         String alarm_file_data[] = new String[20];
         int alarm_list_value = 0;
+
+
 
         public AlarmFile(Context context, int number) {
             try{
@@ -106,54 +113,41 @@ public class AlarmController{
             return true;
         }
     }
+    */
 
-    public boolean AlarmOneSet(Context context,int number) {
-        //ファイルを開く
-        AlarmFile alarm_file = new AlarmFile(context,number);
-        if(alarm_file.OpenChec()==false){//しっかりと開けたか確認
-            return false;
-        }
+    public AlarmController(Context c){
+        context = c;
+        alarmDataController = new AlarmDataController(c);
+    }
+
+    public boolean AlarmOneSet(int number) {
+        //もし受けっとていなければ自分で開くファイルを開く
+        alarmDataController.OpenFile();
 
         //アラームを識別するコード、任意なので重複しない好きな数値を設定
         //int REQUEST_CODE = 140625;
 
         //まず現在の時刻を取得する
         Calendar cal = Calendar.getInstance();  //オブジェクトの生成
-        int year = cal.get(Calendar.YEAR);        //現在の年を取得
-        int month = cal.get(Calendar.MONTH);  //現在の月を取得
-        int day = cal.get(Calendar.DATE);         //現在の日を取得
-        long time = cal.getTimeInMillis();
 
         //アラーム用のカレンダーを用意する
         Calendar alarm_cal = Calendar.getInstance();  //オブジェクトの生成
-        alarm_cal.set(year,month,day,alarm_file.hour,alarm_file.minute,0);
-        int alarm_year = alarm_cal.get(Calendar.YEAR);        //アラームの年を取得
-        int alarm_month = alarm_cal.get(Calendar.MONTH);  //アラームの月を取得
-        int alarm_day = alarm_cal.get(Calendar.DATE);         //アラームの日を取得
-        long alarm_time = alarm_cal.getTimeInMillis();
+        alarm_cal.set(Calendar.HOUR_OF_DAY,
+                Integer.parseInt(alarmDataController.time[number].split(":")[0]));
+        alarm_cal.set(Calendar.MINUTE,
+                Integer.parseInt(alarmDataController.time[number].split(":")[1]));
+        alarm_cal.set(Calendar.SECOND, 0);
+        alarm_cal.set(Calendar.MILLISECOND, 0);
 
-        if(time>alarm_time){
-            //現在の時間がアラーム時間より後の時　日付などを変える
-            if(cal.getActualMaximum(Calendar.MONTH)<alarm_day+1){
-                alarm_day = 1;
-                if(12<alarm_month+1){
-                    alarm_month = 1;
-                    alarm_year++;
-                }else{
-                    alarm_month++;
-                }
-            }else{
-                alarm_day++;
-            }
-            //再度セットしなおす
-            alarm_cal.set(alarm_year,alarm_month,alarm_day,alarm_file.hour,alarm_file.minute);
-            alarm_time = alarm_cal.getTimeInMillis();
+        if(cal.getTimeInMillis()>=alarm_cal.getTimeInMillis()){
+            //現在の時間がアラーム時間より後の時、一日後にする
+            alarm_cal.add(Calendar.DATE,1);
         }
 
         //設定された日時を表示
-        System.out.println("アラームがセットされました");
-        System.out.println(alarm_year+"/"+(alarm_month+1)+"/"+alarm_day);
-        System.out.println(alarm_file.hour+":"+alarm_file.minute);
+        System.out.println("アラームがセットされました↓");
+        System.out.println(alarm_cal.get(Calendar.YEAR)+"/"+(alarm_cal.get(Calendar.MONTH)+1)+"/"+alarm_cal.get(Calendar.DATE));
+        System.out.println(alarm_cal.get(Calendar.HOUR_OF_DAY)+":"+alarm_cal.get(Calendar.MINUTE));
 
         //指定の時間になったら起動するクラス
         Intent intent = new Intent(context,AlarmReceiver.class);
@@ -165,27 +159,22 @@ public class AlarmController{
         //AlramManager取得
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         //AlramManagerにPendingIntentを登録
-        am.set(AlarmManager.RTC_WAKEUP, alarm_time, sender);
+        am.set(AlarmManager.RTC_WAKEUP, alarm_cal.getTimeInMillis(), sender);
 
-        if(alarm_file.AlarmSetSava(context,number) == false) {
-            System.out.println("アラームがセット保存に失敗キャンセル処理をします");
-            if (AlarmOneCancel(context, number) == false) {//一応キャンセル処理をする
-                //キャンセル処理も失敗
-                Toast.makeText(context,"エラー発生\n今すぐ強制終了とデータ消去を行ってください", Toast.LENGTH_SHORT).show();
-            }
+        if(alarmDataController.OnoffCheced(number,true) && alarmDataController.onoff[number]){
+            //アラームのonoffの保存場所ここでしかonのきろくをしない
+            return true;
+        }else{
             return false;
         }
-        //Toast.makeText(context,alarm_file.hour+":"+alarm_file.minute+"にセットしました", Toast.LENGTH_SHORT).show();
-        return true;
     }
-    public boolean AlarmOneCancel(Context context,int number) {
+
+    public boolean AlarmOneCancel(int number) {
         System.out.println("アラームのキャンセル処理をします");
 
-        //ファイルを開く
-        AlarmFile alarm_file = new AlarmFile(context,number);
-        if(alarm_file.OpenChec()==false){//しっかりと開けたか確認
-            return false;
-        }
+        //もし受けっとていなければ自分で開くファイルを開く
+        alarmDataController.OpenFile();
+
 
         // 不要になった過去のアラームを削除する
         // requestCodeを0から登録していたとする
@@ -197,67 +186,38 @@ public class AlarmController{
         sender.cancel();
         am.cancel(sender);
 
-        if(alarm_file.AlarmCancelSave(context,number) == false) {
-            System.out.println("アラームのキャンセル処理に失敗");
-            Toast.makeText(context,"ScreenError", Toast.LENGTH_SHORT).show();
+        if(alarmDataController.OnoffCheced(number,false) && !alarmDataController.onoff[number]){
+            //アラームのonoffの保存場所ここでしかoffのきろくをしない
+            return true;
+        }else{
             return false;
         }
-        //Toast.makeText(context,"キャンセルしました", Toast.LENGTH_SHORT).show();
-        return true;
     }
-    public boolean AlarmChec(Context context,int number){
-        //ファイルを開く
-        AlarmFile alarm_file = new AlarmFile(context,number);
-        if(alarm_file.OpenChec()==false){//しっかりと開けたか確認
-            return false;
-        }
-
-        return alarm_file.alarm_chec;
+    public boolean AlarmChec(int number){
+        //もし受けっとていなければ自分で開くファイルを開く
+        alarmDataController.OpenFile();
+        return alarmDataController.onoff[number];
     }
-
-    public boolean AlarmSunuzuSet(Context context,int number,int sunuzu_time) {
+    public boolean AlarmSunuzuSet(int number,int sunuzu_time) {
 
         //アラームを識別するコード、任意なので重複しない好きな数値を設定
         //int REQUEST_CODE = 140625;
 
         //まず現在の時刻を取得する
         Calendar cal = Calendar.getInstance();  //オブジェクトの生成
-        int year = cal.get(Calendar.YEAR);        //現在の年を取得
-        int month = cal.get(Calendar.MONTH);  //現在の月を取得
-        int day = cal.get(Calendar.DATE);         //現在の日を取得
         long time = cal.getTimeInMillis();
 
         //アラーム用のカレンダーを用意する
         Calendar alarm_cal = Calendar.getInstance();  //オブジェクトの生成
         long alarm_time = alarm_cal.getTimeInMillis() + sunuzu_time * 60 * 1000;
         alarm_cal.setTimeInMillis(alarm_time);
-        int alarm_year = alarm_cal.get(Calendar.YEAR);        //アラームの年を取得
-        int alarm_month = alarm_cal.get(Calendar.MONTH);  //アラームの月を取得
-        int alarm_day = alarm_cal.get(Calendar.DATE);         //アラームの日を取得
-        int alarm_hour = alarm_cal.get(Calendar.HOUR);         //アラームの日を取得
-        int alarm_minute = alarm_cal.get(Calendar.MINUTE);         //アラームの日を取得
-
-        /*
-        if(time>alarm_time){
-            //現在の時間がアラーム時間より後の時　日付などを変える
-            if(cal.getActualMaximum(Calendar.MONTH)<alarm_day+1){
-                alarm_day = 1;
-                if(12<alarm_month+1){
-                    alarm_month = 1;
-                    alarm_year++;
-                }else{
-                    alarm_month++;
-                }
-            }else{
-                alarm_day++;
-            }
-
-        }*/
 
         //設定された日時を表示
-        System.out.println("アラームがセットされました");
-        System.out.println(alarm_year+"/"+(alarm_month+1)+"/"+alarm_day);
-        System.out.println(alarm_hour+":"+alarm_minute);
+
+        //設定された日時を表示
+        System.out.println("アラームがセットされました↓");
+        System.out.println(alarm_cal.get(Calendar.YEAR)+"/"+(alarm_cal.get(Calendar.MONTH)+1)+"/"+alarm_cal.get(Calendar.DATE));
+        System.out.println(alarm_cal.get(Calendar.HOUR_OF_DAY)+":"+alarm_cal.get(Calendar.MINUTE));
 
         //指定の時間になったら起動するクラス
         Intent intent = new Intent(context,AlarmReceiver.class);
@@ -273,29 +233,7 @@ public class AlarmController{
         //Toast.makeText(context,alarm_file.hour+":"+alarm_file.minute+"にセットしました", Toast.LENGTH_SHORT).show();
         return true;
     }
-    /*
-    public boolean Alarm_all_set() {
 
-        boolean flg = true;
-        for(int i=0;i<20;i++){
-            if(Alarm_one_set(i)==false){
-                flg = false;
-            }
-        }
-        return flg;
-    }
-    public boolean Alarm_all_cancel() {
-        boolean flg = true;
-        for(int i=0;i<20;i++){
-            if(Alarm_one_cancel(i)==false){
-                flg = false;
-            }
-        }
-        return flg;
-    }
-    public int Alarm_chec() {
-        return 0;
-    }
-    */
+
 
 }

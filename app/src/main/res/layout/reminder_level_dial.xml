@@ -53,7 +53,7 @@
             android:layout_alignParentRight="true"
             android:max="100"
             android:indeterminate="false"
-            android:progress="50" />
+            android:progress="0" />
 
     </RelativeLayout>
 

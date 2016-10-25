@@ -4,24 +4,10 @@
     <group android:checkableBehavior="single">
         <item android:title="メイン機能">
             <item
-                android:id="@+id/nav_alarm"
-                android:title="アラーム" />
+                android:id="@+id/nav_reminder"
+                android:title="リマインダー" />
         </item>
     </group>
-
-    <item android:title="並び替え">
-        <menu>
-            <item
-                android:id="@+id/nav_bay_reminder"
-                android:title="@string/reminder_config_title_time" />
-            <item
-                android:id="@+id/nav_level_reminder"
-                android:title="@string/reminder_config_title_level" />
-            <item
-                android:id="@+id/nav_old_reminder"
-                android:title="@string/reminder_config_title_old" />
-        </menu>
-    </item>
 
     <item android:title="その他">
         <menu>

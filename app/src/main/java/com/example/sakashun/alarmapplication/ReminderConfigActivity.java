@@ -40,7 +40,7 @@ public class ReminderConfigActivity extends AppCompatActivity
         //各レベルの設定
         for(int i=1;i<6;i++) {
             new Pref(getApplicationContext(), ("level_"+i), "music", false);
-            new Pref(getApplicationContext(), ("level_"+i), "music_volu", 50);
+            new Pref(getApplicationContext(), ("level_"+i), "music_volu", 0);
             new Pref(getApplicationContext(), ("level_"+i), "vibration", false);
             new Pref(getApplicationContext(), ("level_"+i), "tuti", false);
         };
@@ -65,17 +65,13 @@ public class ReminderConfigActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_config_activity_main);
 
-        /*
+
         //初回のみ実行
-        if (new Pref().GetBoolean(getApplicationContext(),"init","inti")==false){
+        if (new Pref().GetBoolean(getApplicationContext(),"init","init")==false){
             FastInit();
-            new Pref(getApplicationContext(),"init","init",true);
+            new Pref(getApplicationContext(),"init","init2",true);
             //初回起動が終わったことを保存
         }
-        */
-
-
-        //deleteFile(getString(R.string.reminder_file_name));
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.reminder_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -95,6 +91,7 @@ public class ReminderConfigActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -259,9 +256,12 @@ public class ReminderConfigActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_alarm) {
+            finish();
             // Handle the camera action
+            Intent intent = new Intent(getApplication()
+                    ,com.example.sakashun.alarmapplication.AlarmConfig.class);
+            startActivity(intent);
         }
-
         else if (id == R.id.nav_bay_reminder) {
             sort_tipy = 0;
             reminder_list_make();

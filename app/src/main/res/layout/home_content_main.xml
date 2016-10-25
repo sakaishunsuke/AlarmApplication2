@@ -60,10 +60,6 @@
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorHomeLine"/>
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,106 +145,23 @@
                     android:layout_margin="15dp" />
             </RelativeLayout>
 
-            <View
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorHomeLine"/>
+                android:layout_height="wrap_content"
+                android:fillViewport="false"
+                android:id="@+id/scrollView3">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/Alarm_list_height"
-                android:background="@color/colorReminderList1Secondary" >
-
-                <RelativeLayout
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="買い物"
-                        android:id="@+id/textView20"
-                        android:layout_weight="1"
-                        android:textSize="@dimen/list_text_size"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:paddingLeft="35dp"
-                        android:gravity="center_vertical" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="17:00"
-                        android:id="@+id/textView17"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textSize="@dimen/list_text_size" />
-                </RelativeLayout>
-            </LinearLayout>
+                    android:id="@+id/reminder_list_linear" />
+            </ScrollView>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorHomeLine"/>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/Alarm_list_height"
-                android:background="@color/colorReminderList3Secondary" >
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="開発"
-                        android:id="@+id/textView16"
-                        android:layout_weight="1"
-                        android:textSize="@dimen/list_text_size"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:paddingLeft="35dp"
-                        android:gravity="center_vertical" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="19:00"
-                        android:id="@+id/textView19"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textSize="@dimen/list_text_size" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorHomeLine"/>
-
 
 
             <com.balysv.materialripple.MaterialRippleLayout
