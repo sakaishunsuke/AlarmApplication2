@@ -29,7 +29,7 @@
             android:alpha="100"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:id="@+id/view" />
+            android:id="@+id/view1" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -38,7 +38,7 @@
             android:id="@+id/linearLayout"
             android:layout_alignParentRight="true"
             android:layout_above="@+id/linearLayout2"
-            android:layout_below="@+id/view">
+            android:layout_below="@+id/view1">
 
             <RelativeLayout
                 android:layout_width="match_parent"

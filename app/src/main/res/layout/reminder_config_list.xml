@@ -28,7 +28,7 @@
             android:alpha="100"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:id="@+id/view" />
+            android:id="@+id/view1" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -37,13 +37,14 @@
             android:id="@+id/linearLayout"
             android:layout_alignParentRight="true"
             android:layout_above="@+id/linearLayout2"
-            android:layout_below="@+id/view">
+            android:layout_below="@+id/view1">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorAlarmListPrimary"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:id="@+id/view2">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -64,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 style="@style/diagonalStyle"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:id="@+id/view3">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -92,8 +94,7 @@
             android:layout_height="10dp"
             android:layout_weight="1"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/linearLayout2">
+            android:layout_alignParentLeft="true">
 
             </LinearLayout>
 

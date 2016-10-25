@@ -118,7 +118,7 @@ public class AlarmSetting extends ActionBarActivity {
         //↓曲名取得
         RingtoneManager manager = new RingtoneManager(AlarmSetting.this);// マネージャを作成
         manager.setType(RingtoneManager.TYPE_ALARM);//アラーム音のセット
-        //カーソルを取得して、moveToNextしていく
+        //カーソルを取得して、moveToNextしてい
         Cursor cursor = manager.getCursor();
         music_name_text.setText(cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX));
         System.out.println("曲名:" + music_name_text.getText());

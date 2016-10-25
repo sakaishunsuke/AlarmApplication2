@@ -16,11 +16,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorHome"
+            android:background="@color/colorReminderToolBar"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/alarm_setting" />
+    <include layout="@layout/reminder_setting" />
 
 </android.support.design.widget.CoordinatorLayout>

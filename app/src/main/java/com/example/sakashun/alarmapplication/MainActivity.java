@@ -170,39 +170,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     void ReminderStart(){
-        //アラームを識別するコード、任意なので重複しない好きな数値を設定
-        int REQUEST_CODE = 140625;
-
-        //通知を鳴らしたい時間をセットする
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        //cal.set(2016, 9, 8, 1, 38, 0);  //年、月、日、時、分、秒
-        //cal.set(Calendar.MINUTE,50);    //ミリ秒
-
-        //ミリ秒で通知時間を設定する
-        System.out.println("REQUEST_CODE" + REQUEST_CODE + " -> init_alarm:" +cal.getTimeInMillis());
-        long init_alarm = cal.getTimeInMillis()+5000;
-        System.out.println("REQUEST_CODE" + REQUEST_CODE + " -> init_alarm:" + init_alarm);
-
-        //指定の時間になったら起動するクラス
-        Intent intent = new Intent(MainActivity.this,AlarmReceiver.class);
-        //ntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        //普通のintentと同じように、KEYとの組み合わせで値を受け渡しできるよ
-        //intent.putExtra("KEY", 123);
-        //ブロードキャストを投げるPendingIntentの作成
-        PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        //AlramManager取得
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        //AlramManagerにPendingIntentを登録
-        am.set(AlarmManager.RTC_WAKEUP, init_alarm, sender);
+        startActivity(new Intent(getApplication(),com.example.sakashun.alarmapplication.ReminderConfigActivity.class));
     }
+
     void LockSet(){
-        Intent intent = new Intent(getApplication()
-                ,com.example.sakashun.alarmapplication.SetActivity.class);
-        startActivity(intent);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,7 +199,7 @@ public class MainActivity extends AppCompatActivity
         reminder_all_list.setOnClickListener(new View.OnClickListener(){
             @Override
             public  void onClick(View v){
-                //LockSet();
+                ReminderStart();
             }
         });
 
@@ -286,13 +258,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_alarm) {
-            // Handle the camera action
             Toast.makeText(MainActivity.this,"メニューで"+item.toString()+"が押されました", Toast.LENGTH_SHORT).show();
             AlarmStart();
         } else if (id == R.id.nav_reminder) {
-
             Toast.makeText(MainActivity.this,"メニューで"+item.toString()+"が押されました", Toast.LENGTH_SHORT).show();
-            //ReminderStart();
+            ReminderStart();
         } else if (id == R.id.nav_setting) {
 
             Toast.makeText(MainActivity.this,"メニューで"+item.toString()+"が押されました", Toast.LENGTH_SHORT).show();

@@ -9,7 +9,198 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.sakashun.alarmapplication.AlarmSetting"
-    tools:showIn="@layout/alarm_setting_app_bar_main">
+    tools:showIn="@layout/reminder_setting_app_bar_main">
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/Alarm_list_height"
+        android:background="@color/colorReminderToolBar" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="タイトル"
+            android:id="@+id/textView10"
+            android:textSize="@dimen/list_text_size"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/colorAlarmToolbarText" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/titleText"
+            android:layout_toRightOf="@+id/textView10"
+            android:gravity="center_vertical|right"
+            android:inputType="text"
+            android:textColor="@color/colorAlarmToolbarText"
+            android:text="メモ"
+            android:textSize="@dimen/list_text_size"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:paddingRight="20dp"
+            android:selectAllOnFocus="false"
+            android:singleLine="false" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/colorAlarmLine"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/Alarm_list_height"
+                android:id="@+id/hiduke_layout" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="日付"
+                    android:id="@+id/textView21"
+                    android:textSize="@dimen/list_text_size"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:layout_marginLeft="60dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="タップで日付設定"
+                    android:id="@+id/hiduke_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textView21"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|center"
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:textSize="@dimen/list_text_size" />
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/colorAlarmLine"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/Alarm_list_height"
+                android:id="@+id/time_layout" >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="時刻"
+                    android:id="@+id/textView11"
+                    android:textSize="@dimen/list_text_size"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:layout_marginLeft="60dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="タップで時間設定"
+                    android:id="@+id/time_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textView11"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|center"
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:textSize="@dimen/list_text_size" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/colorAlarmLine"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/Alarm_list_height"
+                android:id="@+id/level_layout" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="通知レベル"
+                    android:id="@+id/textView23"
+                    android:textSize="@dimen/list_text_size"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:layout_marginLeft="60dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="レベル5"
+                    android:id="@+id/level_text"
+                    android:textSize="@dimen/list_text_size"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:gravity="end" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/colorAlarmLine"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="内容"
+                    android:id="@+id/textView22"
+                    android:textSize="@dimen/list_text_size"
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/memo_content_edit"
+                    android:layout_below="@+id/textView22"
+                    android:layout_alignLeft="@+id/textView22"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorAlarmLine"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

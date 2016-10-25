@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorReminderToolBar"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAlarmLine"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="レベル1"
+        android:id="@+id/level1_text"
+        android:gravity="fill_vertical"
+        android:paddingLeft="20dp"
+        android:textSize="20sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAlarmLine"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="レベル2"
+        android:id="@+id/level2_text"
+        android:gravity="fill_vertical"
+        android:paddingLeft="20dp"
+        android:textSize="20sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAlarmLine"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="レベル3"
+        android:id="@+id/level3_text"
+        android:gravity="fill_vertical"
+        android:paddingLeft="20dp"
+        android:textSize="20sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAlarmLine"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="レベル4"
+        android:id="@+id/level4_text"
+        android:gravity="fill_vertical"
+        android:paddingLeft="20dp"
+        android:textSize="20sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAlarmLine"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="レベル5"
+        android:id="@+id/level5_text"
+        android:gravity="fill_vertical"
+        android:paddingLeft="20dp"
+        android:textSize="20sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAlarmLine"/>
+</LinearLayout>
