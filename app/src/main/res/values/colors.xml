@@ -8,20 +8,8 @@
     <color name="colorHome">#000000</color>
     <color name="colorAlarmText">#000000</color>
 
-    <!--
-    <color name="colorPrimary">#9c29b0</color>
-    <color name="colorBlack">#000000</color>
-    <color name="colorAlarmTitle">#9e9e9e</color>
-    <color name="colorAlarmList">#e0e0e0</color>
-    <color name="colorReminderTitle">#2397f3</color>
-    <color name="colorReminderList">#e3f2fd</color>
-
-    <color name="colorTest">#aaaa00</color>
-    <color name="colorAlarmListBack">#616161</color>
-    -->
-
-    <color name="colorHomeSystemBar">#7b1fa2</color>
-    <color name="colorHomeToolBar">#9c27b0</color>
+    <color name="colorHomeSystemBar">#D81B60</color>
+    <color name="colorHomeToolBar">#E91E63</color>
     <color name="colorHomeBack">#ffffff</color>
     <color name="colorHomeAllSelect">#ffffff</color>
     <color name="colorHomeLine">#000000</color>
