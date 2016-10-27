@@ -115,17 +115,17 @@ public class AlarmSetting extends ActionBarActivity{
         
         mp = MediaPlayer.create(this, music_uri);//アラームのデフォルトの曲をセット
         mp.setLooping(true);//リピート設定
-        System.out.println("uriだよ　" + music_uri.toString());
+        //System.out.println("uriだよ　" + music_uri.toString());
         //↓曲名取得
         RingtoneManager manager = new RingtoneManager(AlarmSetting.this);// マネージャを作成
         manager.setType(RingtoneManager.TYPE_ALARM);//アラーム音のセット
         //カーソルを取得して、moveToNextしてい
         Cursor cursor = manager.getCursor();
         music_name_text.setText(cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX));
-        System.out.println("曲名:" + music_name_text.getText());
+        //System.out.println("曲名:" + music_name_text.getText());
         while (cursor.moveToNext()) {
             String title = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);    // 着信音などの名前
-            System.out.println("曲名:" + title);
+            //System.out.println("曲名:" + title);
             /*
             String uriPrefix = cursor.getString(RingtoneManager.URI_COLUMN_INDEX);
             String index = cursor.getString(RingtoneManager.ID_COLUMN_INDEX);
@@ -347,7 +347,6 @@ public class AlarmSetting extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 final String item_list[] = new String[] {
-                        "なし",
                         "5分",
                         "10分",
                         "15分",
@@ -356,7 +355,7 @@ public class AlarmSetting extends ActionBarActivity{
                         "30分" };
 
                 int chec_number = -1;
-                for (int i=0; i<7 && chec_number==-1; i++) {
+                for (int i=0; i<item_list.length && chec_number==-1; i++) {
                     if(sunuzu_text.getText().toString().matches(item_list[i]))
                         chec_number = i;
                 }
@@ -392,6 +391,9 @@ public class AlarmSetting extends ActionBarActivity{
         //編集できたかチェック
         Intent intent = getIntent();
         if(intent.getBooleanExtra("Edit",false) && (edit_number = intent.getIntExtra("number",-1)) != -1){
+            if(edit_number > 1000 || edit_number < -1000){
+                edit_number = alarmDataController.SearchDataNumber(edit_number);
+            }
             toolbar.setTitle("アラームの編集");
             editSet();
         }else{

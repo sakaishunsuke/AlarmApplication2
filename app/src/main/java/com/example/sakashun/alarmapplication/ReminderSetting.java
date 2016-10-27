@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.sakashun.alarmapplication.Rminder.ReminderAlarmController;
 import com.example.sakashun.alarmapplication.Rminder.ReminderFileController;
 
 import java.io.BufferedReader;
@@ -70,6 +71,8 @@ public class ReminderSetting extends ActionBarActivity {
     AlarmController alarmController;//アラームセットの準備
     //実際にセットしているのはalarm_makeの中の上書き直後
 
+    ReminderFileController reminderFileController;
+
     int edit_number = -1;//編集中か判断する　-1＝新規。-1！=編集
 
     public void linkSet() {
@@ -85,6 +88,7 @@ public class ReminderSetting extends ActionBarActivity {
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);//キーボードのオブジェクト設定
         mainLayout = (LinearLayout) findViewById(R.id.setting_liner);//このアクティビティのレイアウト取得
 
+        reminderFileController = new ReminderFileController(getApplicationContext());
     }
 
     public void reminder_make() {
@@ -94,8 +98,6 @@ public class ReminderSetting extends ActionBarActivity {
         }
         //フォーカスを背景にもっていく
         mainLayout.requestFocus();
-
-        ReminderFileController reminderFileController = new ReminderFileController(getApplicationContext());
 
         //編集中ならばいちどどのデータを消す
         if(edit_number!=-1){
@@ -108,19 +110,10 @@ public class ReminderSetting extends ActionBarActivity {
                 time_text.getText().toString(),
                 level_text.getText().toString(),
                 memo_content_edit.getText().toString());
-        //アラームのセット
-        /*
-        alarmController = new AlarmController();
-        alarmController.AlarmOneSet(ReminderSetting.this,alarm_list_number);
-        */
 
-        //通知表示実験
-        MyNotif myNotif = new MyNotif(this);
-        Intent intent = new Intent(getApplication(),ReminderSetting.class);
-        intent.putExtra("Edit",true);
-        intent.putExtra("number",reminderFileController.reminder_kazu);
-        myNotif.PushNotif_Activity(title_edit.getText().toString(),memo_content_edit.getText().toString(),intent);
+        edit_number = reminderFileController.reminder_kazu-1;
 
+        //通知はonデストロイでセット
         finish();
     }
 
@@ -320,6 +313,11 @@ public class ReminderSetting extends ActionBarActivity {
             if( (edit_number = intent.getIntExtra("number",-1)) == -1){
                 finish();
             }
+            System.out.println("受け取り番号 "+edit_number);
+            if(edit_number > 101 || edit_number < -101){
+                edit_number = reminderFileController.SearchDataNumber(edit_number);
+                System.out.println("通知バーからの起動 "+edit_number);
+            }
             editSet();
         }else{
             defaultSet();
@@ -363,6 +361,18 @@ public class ReminderSetting extends ActionBarActivity {
         }
 
         return result;
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        if(edit_number != -1) {
+            //編集中、もしくは、保存後
+            //通知表示実験
+            ReminderAlarmController reminderAlarmController = new ReminderAlarmController(this);
+            reminderAlarmController.AlarmOneSet(edit_number);
+        }
     }
 
 

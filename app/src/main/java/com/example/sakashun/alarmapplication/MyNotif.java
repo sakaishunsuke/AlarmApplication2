@@ -22,25 +22,26 @@ public class MyNotif {
         manager= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    private void setNotif(String titel,String content){
+    private void setNotif(String titel,String content,int type){
+        //タイプ　0b0→通知のみ　0b1→音あり　010b→バイブあり
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentTitle(titel);
         builder.setContentText(content);
-        builder.setDefaults(Notification.PRIORITY_DEFAULT);
+        builder.setDefaults(type);
         if(conntentIntent != null) {
             builder.setContentIntent(conntentIntent);
         }
-    }
-
-    public void PushNotif_Activity(String titel,String content,Intent otificationIntent){
-        //通知をクリックしたときのインテントをつくる
-        conntentIntent = PendingIntent.getActivity(context,0,otificationIntent,0);
-        setNotif(titel,content);
         manager.notify(1,builder.build());
     }
 
-    public void PushNotif_noActivity(String titel,String content){
-        setNotif(titel,content);
+    public void PushNotif_Intent(String titel,String content,int type,Intent otificationIntent){
+        //通知をクリックしたときのインテントをつくる
+        conntentIntent = PendingIntent.getActivity(context,0,otificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        setNotif(titel,content,type);
+    }
+
+    public void PushNotif_noIntent(String titel,String content,int type){
+        setNotif(titel,content,type);
     }
 
 }

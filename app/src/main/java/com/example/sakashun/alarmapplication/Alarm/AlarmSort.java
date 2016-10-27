@@ -74,7 +74,7 @@ public class AlarmSort {
             flag = false;
             for(int i=0;i<sort_kauz-1;i++){
                 //要素が0に近い方が後ろのより時間が大きい場合は入れ替える
-                if(hindo[sort_number[i]]  < calendar_time[sort_number[i+1]]){
+                if(hindo[sort_number[i]]  < hindo[sort_number[i+1]]){
                     flag = true;
                     int a = sort_number[i];
                     sort_number[i] = sort_number[i+1];

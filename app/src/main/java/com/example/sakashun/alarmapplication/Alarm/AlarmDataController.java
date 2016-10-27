@@ -5,6 +5,8 @@ import android.content.Context;
 import com.example.sakashun.alarmapplication.R;
 import com.example.sakashun.alarmapplication.Rminder.Pref;
 
+import java.util.Calendar;
+
 /**
  * Created by Saka Shun on 2016/10/22.
  */
@@ -24,6 +26,7 @@ public class AlarmDataController {
     public String sunuzu[] = new String[N_MAX];
     public boolean onoff[] = new boolean[N_MAX];
     public int hindo[] = new int[N_MAX];
+    public int my_number[] = new int[N_MAX];
     
     public int alarm_kazu=0;
 
@@ -48,8 +51,9 @@ public class AlarmDataController {
             sunuzu[i] = new Pref().GetString(context,( Gs(R.string.alarm_data_name)+i),"sunuzu");
             onoff[i] = new Pref().GetBoolean(context,( Gs(R.string.alarm_data_name)+i),"onoff");
             hindo[i] = new Pref().GetInt(context,( Gs(R.string.alarm_data_name)+i),"hindo");
+            my_number[i] = new Pref().GetInt(context,(Gs(R.string.alarm_data_name)+i),"my_number");
             System.out.println(i+"番目の内容↓");
-            System.out.println(name[i]+","+time[i]+","+volume[i]+","+vibrator[i]+","+light[i]+","+music_uri[i]+","+music_name[i]+","+sunuzu[i]+","+onoff[i]+","+hindo[i]);
+            System.out.println(name[i]+","+time[i]+","+volume[i]+","+vibrator[i]+","+light[i]+","+music_uri[i]+","+music_name[i]+","+sunuzu[i]+","+onoff[i]+","+hindo[i]+","+my_number[i]);
         }
         return true;
     }
@@ -60,7 +64,7 @@ public class AlarmDataController {
         for (int i = 0; i < alarm_kazu; i++) {
             if (number != i) {
                 System.out.println(i + "番目の内容を保存↓");
-                System.out.println(name[i]+","+time[i]+","+volume[i]+","+vibrator[i]+","+light[i]+","+music_uri[i]+","+music_name[i]+","+sunuzu[i]+","+onoff[i]+","+hindo[i]);
+                System.out.println(name[i]+","+time[i]+","+volume[i]+","+vibrator[i]+","+light[i]+","+music_uri[i]+","+music_name[i]+","+sunuzu[i]+","+onoff[i]+","+hindo[i]+","+my_number[i]);
                 new Pref(context, (Gs(R.string.alarm_data_name) + write_count), "name", name[i]);
                 new Pref(context, (Gs(R.string.alarm_data_name) + write_count), "time", time[i]);
                 new Pref(context, (Gs(R.string.alarm_data_name) + write_count), "volume", volume[i]);
@@ -71,6 +75,7 @@ public class AlarmDataController {
                 new Pref(context, (Gs(R.string.alarm_data_name) + write_count), "sunuzu", sunuzu[i]);
                 new Pref(context, (Gs(R.string.alarm_data_name) + write_count), "onoff", onoff[i]);
                 new Pref(context, (Gs(R.string.alarm_data_name) + write_count), "hindo", hindo[i]);
+                new Pref(context, (Gs(R.string.alarm_data_name) + write_count), "my_number", my_number[i]);
                 write_count++;
             }
         }
@@ -96,6 +101,9 @@ public class AlarmDataController {
         new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "sunuzu", r_sunuzu);
         new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "onoff", r_onoff);
         new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "hindo", r_hindo);
+
+        int now_time = (int)(Calendar.getInstance().getTimeInMillis()/1000);
+        new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "my_number", now_time);
         //ひとつ増えたことを記録
         alarm_kazu++;
         new Pref(context,Gs(R.string.alarm_list_name), Gs(R.string.alarm_list_number),alarm_kazu );
@@ -114,5 +122,15 @@ public class AlarmDataController {
         int now_count = new Pref().GetInt(context,( Gs(R.string.alarm_data_name)+number),"hindo");  //今までのカウントの読み込み
         new Pref(context, (Gs(R.string.alarm_data_name) + number), "hindo", (int)(now_count+1));//保存
         return  true;
+    }
+
+    public int SearchDataNumber(int search_number){//時間によって割り振った番号から探す
+        OpenFile();
+        for (int i=0;i<alarm_kazu;i++){
+            if(my_number[i]==search_number){
+                return i;
+            }
+        }
+        return -1;
     }
 }

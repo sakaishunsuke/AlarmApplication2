@@ -41,6 +41,9 @@
 
         <receiver android:name=".AlarmReceiver">
         </receiver>
+        <receiver android:name=".Rminder.TutiReceiver">
+        </receiver>
+
         <activity
             android:name=".AlarmNotification"
             android:label="@string/app_name"

@@ -55,7 +55,8 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:textSize="@dimen/list_text_size"
-                    android:textColor="@color/colorAlarmSettingText" />
+                    android:textColor="@color/colorAlarmSettingText"
+                    android:maxLines="1" />
             </RelativeLayout>
 
             <RelativeLayout

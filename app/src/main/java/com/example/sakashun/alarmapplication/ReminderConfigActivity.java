@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sakashun.alarmapplication.Rminder.Pref;
+import com.example.sakashun.alarmapplication.Rminder.ReminderAlarmController;
 import com.example.sakashun.alarmapplication.Rminder.ReminderFileController;
 import com.example.sakashun.alarmapplication.Rminder.ReminderSort;
 
@@ -209,6 +210,8 @@ public class ReminderConfigActivity extends AppCompatActivity
             reminder_list_layout.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
+                    //いったん通知のセットを消す
+                    new ReminderAlarmController(ReminderConfigActivity.this).AlarmOneCancel(number);
                     //編集への処理
                     Intent intent = new Intent(getApplication()
                             ,com.example.sakashun.alarmapplication.ReminderSetting.class);
@@ -229,6 +232,8 @@ public class ReminderConfigActivity extends AppCompatActivity
                             "消去",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    //通知のセットを消す
+                                    new ReminderAlarmController(ReminderConfigActivity.this).AlarmOneCancel(number);
                                     reminderFileController.DeleteFile(number);
                                     reminder_list_make();//再起させてリストを作り直す
                                 }

@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.sakashun.alarmapplication.Alarm.AlarmDataController;
+
 /**
  * Created by Saka Shun on 2016/09/08.
  */
@@ -23,7 +25,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         Intent intent = new Intent(context
                 , com.example.sakashun.alarmapplication.AlarmNotification.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("NUMBER", data.getIntExtra("NUMBER", -1));
+        AlarmDataController a = new AlarmDataController(context);
+        intent.putExtra("NUMBER", new IntentGetNumber(data,a).GetNumber());
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

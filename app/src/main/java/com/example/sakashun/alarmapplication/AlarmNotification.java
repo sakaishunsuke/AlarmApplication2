@@ -68,6 +68,8 @@ public class AlarmNotification extends Activity {
     Handler handler = new Handler();//定期処理
     private Camera camera = null;
 
+    boolean sunuzu_set = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,7 @@ public class AlarmNotification extends Activity {
         keylock = keyguard.newKeyguardLock("disableLock");
         keylock.disableKeyguard();
         //アラーム番号の取得
-        final int number = getIntent().getIntExtra("NUMBER",-1);
+        final int number = new IntentGetNumber(getIntent(),new AlarmDataController(this)).GetNumber();
 
         //ホントにならすべきかチェック
         alarmController = new AlarmController(this);
@@ -152,7 +154,8 @@ public class AlarmNotification extends Activity {
                 if(number!=-1 && sunuzu!=0) {
                     alarmController = new AlarmController(AlarmNotification.this);
                     alarmController.AlarmSunuzuSet(number,sunuzu);
-                    alarmController.AlarmOneCancel(number);
+                    sunuzu_set = true;
+                    //alarmController.AlarmOneCancel(number);
                     new AlarmDataController(AlarmNotification.this).UseCount(number);//起動したことを記録する
                     finish();
                 }
@@ -360,6 +363,11 @@ public class AlarmNotification extends Activity {
     @Override
     public void onDestroy() {
         Log.v("通知ログ", "destroy");
+        if(sunuzu_set == false){
+            //スヌーズがセットされていないなら消す
+            //アラーム番号の取得
+            new AlarmController(AlarmNotification.this).AlarmOneCancel(getIntent().getIntExtra("NUMBER",-1));
+        }
         super.onDestroy();
     }
 

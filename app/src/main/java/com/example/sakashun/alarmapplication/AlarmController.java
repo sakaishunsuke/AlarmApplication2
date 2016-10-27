@@ -152,8 +152,12 @@ public class AlarmController{
         //指定の時間になったら起動するクラス
         Intent intent = new Intent(context,AlarmReceiver.class);
         //ntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        //普通のintentと同じように、KEYとの組み合わせで値を受け渡しできるよ
-        intent.putExtra("NUMBER",number);
+
+        //個体番号をintentに記録する
+        new IntentPutNumber(intent,number,alarmDataController);
+        //固有番号に変える
+        number = alarmDataController.my_number[number];
+
         //ブロードキャストを投げるPendingIntentの作成
         PendingIntent sender = PendingIntent.getBroadcast(context, number, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //AlramManager取得
@@ -179,6 +183,10 @@ public class AlarmController{
         // 不要になった過去のアラームを削除する
         // requestCodeを0から登録していたとする
         Intent intent = new Intent(context,AlarmReceiver.class);
+
+        //固有番号に変える
+        number = alarmDataController.my_number[number];
+
         //ブロードキャストを投げるPendingIntentの作成
         PendingIntent sender = PendingIntent.getBroadcast(context, number, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //AlramManager取得
@@ -215,15 +223,19 @@ public class AlarmController{
         //設定された日時を表示
 
         //設定された日時を表示
-        System.out.println("アラームがセットされました↓");
+        System.out.println("アラームのスヌーズがセットされました↓");
         System.out.println(alarm_cal.get(Calendar.YEAR)+"/"+(alarm_cal.get(Calendar.MONTH)+1)+"/"+alarm_cal.get(Calendar.DATE));
         System.out.println(alarm_cal.get(Calendar.HOUR_OF_DAY)+":"+alarm_cal.get(Calendar.MINUTE));
 
         //指定の時間になったら起動するクラス
         Intent intent = new Intent(context,AlarmReceiver.class);
         //ntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        //普通のintentと同じように、KEYとの組み合わせで値を受け渡しできるよ
-        intent.putExtra("NUMBER",number);
+
+        //個体番号をintentに記録する
+        new IntentPutNumber(intent,number,alarmDataController);
+        //固有番号に変える
+        number = alarmDataController.my_number[number];
+
         //ブロードキャストを投げるPendingIntentの作成
         PendingIntent sender = PendingIntent.getBroadcast(context, number, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //AlramManager取得
@@ -231,7 +243,13 @@ public class AlarmController{
         //AlramManagerにPendingIntentを登録
         am.set(AlarmManager.RTC_WAKEUP, alarm_time, sender);
         //Toast.makeText(context,alarm_file.hour+":"+alarm_file.minute+"にセットしました", Toast.LENGTH_SHORT).show();
-        return true;
+
+        if(alarmDataController.OnoffCheced(number,true) && !alarmDataController.onoff[number]){
+            //アラームのonoffの保存場所ここでしかonのきろくをしない
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
