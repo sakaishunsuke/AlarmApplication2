@@ -37,42 +37,10 @@ public class ReminderConfigActivity extends AppCompatActivity
 
     int sort_tipy=0;
 
-    void FastInit(){
-        //各レベルの設定
-        for(int i=1;i<6;i++) {
-            new Pref(getApplicationContext(), ("level_"+i), "music", false);
-            new Pref(getApplicationContext(), ("level_"+i), "music_volu", 0);
-            new Pref(getApplicationContext(), ("level_"+i), "vibration", false);
-            new Pref(getApplicationContext(), ("level_"+i), "tuti", false);
-        };
-        new Pref(getApplicationContext(), "level_1", "PriColor", getResources().getColor(R.color.colorReminderList1Primary));
-        new Pref(getApplicationContext(), "level_1", "SecoColor", getResources().getColor(R.color.colorReminderList1Secondary));
-
-        new Pref(getApplicationContext(), "level_2", "PriColor", getResources().getColor(R.color.colorReminderList2Primary));
-        new Pref(getApplicationContext(), "level_2", "SecoColor", getResources().getColor(R.color.colorReminderList2Secondary));
-
-        new Pref(getApplicationContext(), "level_3", "PriColor", getResources().getColor(R.color.colorReminderList3Primary));
-        new Pref(getApplicationContext(), "level_3", "SecoColor", getResources().getColor(R.color.colorReminderList3Secondary));
-
-        new Pref(getApplicationContext(), "level_4", "PriColor", getResources().getColor(R.color.colorReminderList4Primary));
-        new Pref(getApplicationContext(), "level_4", "SecoColor", getResources().getColor(R.color.colorReminderList4Secondary));
-
-        new Pref(getApplicationContext(), "level_5", "PriColor", getResources().getColor(R.color.colorReminderList5Primary));
-        new Pref(getApplicationContext(), "level_5", "SecoColor", getResources().getColor(R.color.colorReminderList5Secondary));
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_config_activity_main);
-
-
-        //初回のみ実行
-        if (new Pref().GetBoolean(getApplicationContext(),"init","init")==false){
-            FastInit();
-            new Pref(getApplicationContext(),"init","init2",true);
-            //初回起動が終わったことを保存
-        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.reminder_nav_view);
         navigationView.setNavigationItemSelectedListener(this);

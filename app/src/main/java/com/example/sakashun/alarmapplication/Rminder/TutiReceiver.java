@@ -18,8 +18,6 @@ public class TutiReceiver extends BroadcastReceiver {
     private static final int VIBRATE_FLAG= Notification.DEFAULT_VIBRATE;//バイブのflag
     private static final int LED_FLAG= Notification.DEFAULT_LIGHTS;//LEDのflag
 
-
-
     // notifications
     @Override
     public void onReceive(Context context, Intent data) {
@@ -38,8 +36,12 @@ public class TutiReceiver extends BroadcastReceiver {
                 //バイブあり
                 type = type | VIBRATE_FLAG;
             }
+            if(new Pref().GetBoolean(context, ("level_" + level), "led")){
+                //バイブあり
+                type = type | LED_FLAG;
+            }
             MyNotif myNotif = new MyNotif(context);
-            myNotif.PushNotif_noIntent(r.name[number],r.memo_content[number],type);
+            myNotif.PushNotif_noIntent(r.name[number],r.memo_content[number],r.my_number[number],type);
         }else{
             //通知がoff設定だったらおしまい（何もしない）
             return;

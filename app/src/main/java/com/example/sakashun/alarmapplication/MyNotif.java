@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Created by Saka Shun on 2016/10/26.
@@ -22,26 +24,35 @@ public class MyNotif {
         manager= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    private void setNotif(String titel,String content,int type){
+    private void setNotif(String titel,String content,int my_number,int type){
         //タイプ　0b0→通知のみ　0b1→音あり　010b→バイブあり
         builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher));
         builder.setContentTitle(titel);
         builder.setContentText(content);
         builder.setDefaults(type);
+        builder.setStyle(new Notification.BigTextStyle()
+                .bigText(content)
+                .setBigContentTitle(titel));
         if(conntentIntent != null) {
             builder.setContentIntent(conntentIntent);
         }
-        manager.notify(1,builder.build());
+        manager.notify(my_number,builder.build());
     }
 
-    public void PushNotif_Intent(String titel,String content,int type,Intent otificationIntent){
+    public void PushNotif_Intent(String titel,String content,int my_number,int type,Intent otificationIntent){
         //通知をクリックしたときのインテントをつくる
         conntentIntent = PendingIntent.getActivity(context,0,otificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        setNotif(titel,content,type);
+        setNotif(titel,content,my_number,type);
     }
 
-    public void PushNotif_noIntent(String titel,String content,int type){
-        setNotif(titel,content,type);
+    public void PushNotif_noIntent(String titel,String content,int my_munber,int type){
+        setNotif(titel,content,my_munber,type);
+    }
+
+    public void DeleteNotif(int number) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(number);
     }
 
 }

@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView2"
-        android:background="@color/colorHomeBack"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true">
 
@@ -142,7 +141,8 @@
                     android:id="@+id/imageView9"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_margin="15dp" />
+                    android:layout_margin="15dp"
+                    android:src="@drawable/ic_message_black_48dp" />
             </RelativeLayout>
 
             <ScrollView

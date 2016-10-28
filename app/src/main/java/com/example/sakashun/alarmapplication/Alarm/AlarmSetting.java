@@ -162,8 +162,10 @@ public class AlarmSetting extends ActionBarActivity{
         mainLayout.requestFocus();
 
         int hindo = 0;
+        int my_number = 0;
         if(edit_number != -1){
             hindo = alarmDataController.hindo[edit_number];
+            my_number = alarmDataController.my_number[edit_number];
             alarmDataController.DeleteFile(edit_number);
         }
         alarmDataController.SaveFile(
@@ -176,7 +178,8 @@ public class AlarmSetting extends ActionBarActivity{
                 music_name_text.getText().toString(),
                 sunuzu_text.getText().toString(),
                 false,
-                hindo
+                hindo,
+                my_number
         );
         //無事保存に成功したら
 

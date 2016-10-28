@@ -32,6 +32,7 @@ public class AlarmDataController {
 
     public AlarmDataController(Context applicationContext) {
         context = applicationContext;
+        OpenFile();
     }
 
     private String Gs(int string_id){
@@ -84,7 +85,7 @@ public class AlarmDataController {
         return true;
     }
 
-    public boolean SaveFile(String r_name,String r_time,int r_volume,boolean r_vibrator,boolean r_light, String r_music_uri ,String r_music_name,String r_sunuzu,boolean r_onoff,int r_hindo) {
+    public boolean SaveFile(String r_name,String r_time,int r_volume,boolean r_vibrator,boolean r_light, String r_music_uri ,String r_music_name,String r_sunuzu,boolean r_onoff,int r_hindo,int r_my_number) {
         OpenFile();
         if(alarm_kazu >= N_MAX) {//これ以上保存できない
             return false;
@@ -102,8 +103,12 @@ public class AlarmDataController {
         new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "onoff", r_onoff);
         new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "hindo", r_hindo);
 
-        int now_time = (int)(Calendar.getInstance().getTimeInMillis()/1000);
-        new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "my_number", now_time);
+        if(r_my_number == 0) {
+            int now_time = (int) (Calendar.getInstance().getTimeInMillis() / 1000);
+            new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "my_number", now_time);
+        }else{
+            new Pref(context, (Gs(R.string.alarm_data_name) + alarm_kazu), "my_number", r_my_number);
+        }
         //ひとつ増えたことを記録
         alarm_kazu++;
         new Pref(context,Gs(R.string.alarm_list_name), Gs(R.string.alarm_list_number),alarm_kazu );

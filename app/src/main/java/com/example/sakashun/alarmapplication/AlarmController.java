@@ -165,6 +165,8 @@ public class AlarmController{
         //AlramManagerにPendingIntentを登録
         am.set(AlarmManager.RTC_WAKEUP, alarm_cal.getTimeInMillis(), sender);
 
+        //個体番号から、元のファイル番号に戻る
+        number = alarmDataController.SearchDataNumber(number);
         if(alarmDataController.OnoffCheced(number,true) && alarmDataController.onoff[number]){
             //アラームのonoffの保存場所ここでしかonのきろくをしない
             return true;
@@ -194,6 +196,8 @@ public class AlarmController{
         sender.cancel();
         am.cancel(sender);
 
+        //個体番号から、元のファイル番号に戻る
+        number = alarmDataController.SearchDataNumber(number);
         if(alarmDataController.OnoffCheced(number,false) && !alarmDataController.onoff[number]){
             //アラームのonoffの保存場所ここでしかoffのきろくをしない
             return true;
@@ -244,6 +248,8 @@ public class AlarmController{
         am.set(AlarmManager.RTC_WAKEUP, alarm_time, sender);
         //Toast.makeText(context,alarm_file.hour+":"+alarm_file.minute+"にセットしました", Toast.LENGTH_SHORT).show();
 
+        //個体番号から、元のファイル番号に戻る
+        number = alarmDataController.SearchDataNumber(number);
         if(alarmDataController.OnoffCheced(number,true) && !alarmDataController.onoff[number]){
             //アラームのonoffの保存場所ここでしかonのきろくをしない
             return true;

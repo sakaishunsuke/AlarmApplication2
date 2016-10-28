@@ -28,7 +28,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/reminder_list_linear"></LinearLayout>
+                android:id="@+id/reminder_list_linear"
+                android:clickable="true"></LinearLayout>
         </ScrollView>
 
         <android.support.design.widget.FloatingActionButton

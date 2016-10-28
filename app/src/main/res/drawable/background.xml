@@ -6,13 +6,13 @@
             android:fromDegrees="-35"
             android:toDegrees="0"
             android:pivotX="20%"
-            android:pivotY="350%" >
+            android:pivotY="320%" >
             <shape
                 android:shape="line"
                 android:top="1dip" >
                 <stroke
                     android:width="36dip"
-                    android:color="@color/colorAlarmListPrimary" />
+                    android:color="#ffab91" />
             </shape>
         </rotate>
     </item>

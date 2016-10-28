@@ -9,7 +9,7 @@
     <color name="colorAlarmText">#000000</color>
 
     <color name="colorHomeSystemBar">#D81B60</color>
-    <color name="colorHomeToolBar">#E91E63</color>
+    <color name="colorHomeToolBar">#e91e63</color>
     <color name="colorHomeBack">#ffffff</color>
     <color name="colorHomeAllSelect">#ffffff</color>
     <color name="colorHomeLine">#000000</color>

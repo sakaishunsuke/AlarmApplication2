@@ -17,6 +17,10 @@
         android:layout_height="1px"
         android:background="@color/colorAlarmLine"/>
 
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mrl_rippleOverlay="true" >
 
     <TextView
         android:layout_width="match_parent"
@@ -29,10 +33,17 @@
         android:textSize="20sp"
         android:textColor="#000000" />
 
+    </com.balysv.materialripple.MaterialRippleLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/colorAlarmLine"/>
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mrl_rippleOverlay="true" >
 
     <TextView
         android:layout_width="match_parent"
@@ -44,11 +55,17 @@
         android:paddingLeft="20dp"
         android:textSize="20sp"
         android:textColor="#000000" />
+    </com.balysv.materialripple.MaterialRippleLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/colorAlarmLine"/>
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mrl_rippleOverlay="true" >
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -59,11 +76,17 @@
         android:paddingLeft="20dp"
         android:textSize="20sp"
         android:textColor="#000000" />
+    </com.balysv.materialripple.MaterialRippleLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/colorAlarmLine"/>
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mrl_rippleOverlay="true" >
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -74,11 +97,17 @@
         android:paddingLeft="20dp"
         android:textSize="20sp"
         android:textColor="#000000" />
+    </com.balysv.materialripple.MaterialRippleLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/colorAlarmLine"/>
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mrl_rippleOverlay="true" >
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -89,6 +118,7 @@
         android:paddingLeft="20dp"
         android:textSize="20sp"
         android:textColor="#000000" />
+    </com.balysv.materialripple.MaterialRippleLayout>
 
     <View
         android:layout_width="match_parent"

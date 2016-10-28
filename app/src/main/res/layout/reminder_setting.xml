@@ -73,7 +73,7 @@
                     android:textSize="@dimen/list_text_size"
                     android:layout_centerVertical="true"
                     android:textColor="@color/colorAlarmSettingText"
-                    android:layout_marginLeft="60dp" />
+                    android:layout_toRightOf="@+id/imageView10" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -88,6 +88,16 @@
                     android:gravity="center_vertical|center"
                     android:textColor="@color/colorAlarmSettingText"
                     android:textSize="@dimen/list_text_size" />
+
+                <ImageView
+                    android:layout_width="@dimen/list_icon_size"
+                    android:layout_height="@dimen/list_icon_size"
+                    android:id="@+id/imageView10"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_today_black_48dp"
+                    android:layout_margin="@dimen/list_icon_margin_size"
+                    android:layout_alignParentStart="true" />
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
@@ -125,6 +135,16 @@
                     android:textColor="@color/colorAlarmSettingText"
                     android:textSize="@dimen/list_text_size" />
 
+                <ImageView
+                    android:layout_width="@dimen/list_icon_size"
+                    android:layout_height="@dimen/list_icon_size"
+                    android:id="@+id/imageView11"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_schedule_black_48dp"
+                    android:layout_margin="@dimen/list_icon_margin_size"
+                    android:layout_alignParentStart="true" />
+
             </RelativeLayout>
 
             <View
@@ -160,6 +180,16 @@
                     android:layout_marginRight="30dp"
                     android:textColor="@color/colorAlarmSettingText"
                     android:gravity="end" />
+
+                <ImageView
+                    android:layout_width="@dimen/list_icon_size"
+                    android:layout_height="@dimen/list_icon_size"
+                    android:id="@+id/imageView12"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_volume_up_black_48dp"
+                    android:layout_margin="@dimen/list_icon_margin_size"
+                    android:layout_alignParentStart="true" />
             </RelativeLayout>
 
             <View
@@ -192,6 +222,16 @@
                     android:layout_below="@+id/textView22"
                     android:layout_alignLeft="@+id/textView22"
                     android:layout_alignParentRight="true" />
+
+                <ImageView
+                    android:layout_width="@dimen/list_icon_size"
+                    android:layout_height="@dimen/list_icon_size"
+                    android:id="@+id/imageView13"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_textsms_black_48dp"
+                    android:layout_margin="@dimen/list_icon_margin_size"
+                    android:layout_alignParentStart="true" />
             </RelativeLayout>
 
             <View

@@ -90,7 +90,7 @@ public class AlarmNotification extends Activity {
         keylock = keyguard.newKeyguardLock("disableLock");
         keylock.disableKeyguard();
         //アラーム番号の取得
-        final int number = new IntentGetNumber(getIntent(),new AlarmDataController(this)).GetNumber();
+        final int number = getIntent().getIntExtra("NUMBER",-1);
 
         //ホントにならすべきかチェック
         alarmController = new AlarmController(this);

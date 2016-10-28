@@ -136,7 +136,7 @@ public class ReminderFileController {
             return false;
         }
     }*/
-    public boolean SaveFile(String r_name,String r_hiduke,String r_time,String r_level,String r_memo_content) {
+    public boolean SaveFile(String r_name,String r_hiduke,String r_time,String r_level,String r_memo_content,int r_my_number) {
         OpenFile();
         System.out.println(reminder_kazu + "番目に内容を追加↓");
         System.out.println(r_name + "," + r_hiduke + "," + r_time + "," + r_level + "," + r_memo_content);
@@ -146,9 +146,12 @@ public class ReminderFileController {
         new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu ), "level", r_level);
         new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu ), "memo_content", r_memo_content);
 
-        int now_time = (int)((Calendar.getInstance().getTimeInMillis()/1000) & 0xffffffff);
-        new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu), "my_number", now_time);
-        System.out.println(now_time);
+        if(r_my_number == 0) {
+            int now_time = (int) ((Calendar.getInstance().getTimeInMillis() / 1000) & 0xffffffff);
+            new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu), "my_number", now_time);
+        }else{
+            new Pref(context, (Gs(R.string.reminder_data_name) + reminder_kazu), "my_number", r_my_number);
+        }
         //ひとつ増えたことを記録
         new Pref(context,Gs(R.string.reminder_list_name), Gs(R.string.reminder_list_number),reminder_kazu+1 );
         OpenFile();

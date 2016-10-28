@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.example.sakashun.alarmapplication.Alarm.AlarmDataController;
 import com.example.sakashun.alarmapplication.Alarm.AlarmSort;
+import com.example.sakashun.alarmapplication.Alarm.LockScreenAlarmSet;
 import com.example.sakashun.alarmapplication.R;
 import com.example.sakashun.alarmapplication.Rminder.Pref;
 import com.example.sakashun.alarmapplication.Rminder.ReminderFileController;
@@ -49,21 +50,63 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    void FastInit(){
+        //各レベルの設定
+        new Pref(getApplicationContext(), ("level_2"), "tuti", true);
+
+        new Pref(getApplicationContext(), ("level_3"), "tuti", true);
+        new Pref(getApplicationContext(), ("level_3"), "led" , true);
+
+        new Pref(getApplicationContext(), ("level_4"), "vibration", true);
+        new Pref(getApplicationContext(), ("level_4"), "led" , true);
+        new Pref(getApplicationContext(), ("level_4"), "tuti", true);
+
+        new Pref(getApplicationContext(), ("level_5"), "music", true);
+        new Pref(getApplicationContext(), ("level_5"), "vibration", true);
+        new Pref(getApplicationContext(), ("level_5"), "led" , true);
+        new Pref(getApplicationContext(), ("level_5"), "tuti", true);
+
+        new Pref(getApplicationContext(), "level_1", "PriColor", getResources().getColor(R.color.colorReminderList1Primary));
+        new Pref(getApplicationContext(), "level_1", "SecoColor", getResources().getColor(R.color.colorReminderList1Secondary));
+
+        new Pref(getApplicationContext(), "level_2", "PriColor", getResources().getColor(R.color.colorReminderList2Primary));
+        new Pref(getApplicationContext(), "level_2", "SecoColor", getResources().getColor(R.color.colorReminderList2Secondary));
+
+        new Pref(getApplicationContext(), "level_3", "PriColor", getResources().getColor(R.color.colorReminderList3Primary));
+        new Pref(getApplicationContext(), "level_3", "SecoColor", getResources().getColor(R.color.colorReminderList3Secondary));
+
+        new Pref(getApplicationContext(), "level_4", "PriColor", getResources().getColor(R.color.colorReminderList4Primary));
+        new Pref(getApplicationContext(), "level_4", "SecoColor", getResources().getColor(R.color.colorReminderList4Secondary));
+
+        new Pref(getApplicationContext(), "level_5", "PriColor", getResources().getColor(R.color.colorReminderList5Primary));
+        new Pref(getApplicationContext(), "level_5", "SecoColor", getResources().getColor(R.color.colorReminderList5Secondary));
+    }
+
     void AlarmStart(){
         Intent intent = new Intent(getApplication()
                 ,com.example.sakashun.alarmapplication.AlarmConfig.class);
         startActivity(intent);
     }
+
     void ReminderStart(){
         Intent intent = new Intent(getApplication(),ReminderConfigActivity.class);
         startActivity(intent);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity_main);
+
+        Intent intent = new Intent(getApplication(), LockScreenAlarmSet.class);
+        startActivity(intent);
+
+        //初回のみ実行
+        if (new Pref().GetBoolean(getApplicationContext(),"init","init")==false){
+            FastInit();
+            new Pref(getApplicationContext(),"init","init3",true);
+            //初回起動が終わったことを保存
+        }
 
         /*
         new Pref(getApplicationContext(),
@@ -114,8 +157,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-
 
     //onStartで使用するメソッド
 

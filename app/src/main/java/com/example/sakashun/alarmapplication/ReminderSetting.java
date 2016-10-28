@@ -100,7 +100,9 @@ public class ReminderSetting extends ActionBarActivity {
         mainLayout.requestFocus();
 
         //編集中ならばいちどどのデータを消す
+        int my_numner = 0;
         if(edit_number!=-1){
+            my_numner = reminderFileController.my_number[edit_number];
             reminderFileController.DeleteFile(edit_number);
         }
 
@@ -109,7 +111,8 @@ public class ReminderSetting extends ActionBarActivity {
                 hiduke_text.getText().toString(),
                 time_text.getText().toString(),
                 level_text.getText().toString(),
-                memo_content_edit.getText().toString());
+                memo_content_edit.getText().toString(),
+                my_numner);
 
         edit_number = reminderFileController.reminder_kazu-1;
 

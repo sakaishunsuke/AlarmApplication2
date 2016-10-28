@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="false"
+    android:longClickable="false"
+    android:weightSum="1"
+    android:background="@color/colorAlarmBack">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:id="@+id/alarm_list_layout"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_below="@+id/view1"
+        android:measureWithLargestChild="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/alarm_list_switch"
+                android:checked="false"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="10:55"
+                android:id="@+id/list_time"
+                android:layout_centerVertical="true"
+                android:foregroundGravity="center|center_horizontal"
+                android:gravity="center_vertical|center"
+                android:textColor="@color/colorAlarmListSecondaryText"
+                android:textIsSelectable="false"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:textSize="@dimen/list_text_size"
+                android:layout_toLeftOf="@+id/alarm_list_switch"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="アラーム１"
+                android:id="@+id/list_name"
+                android:gravity="center"
+                android:textSize="@dimen/list_text_size"
+                android:textColor="@color/colorAlarmSettingText"
+                android:maxLines="1"
+                android:layout_toLeftOf="@+id/list_time"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
